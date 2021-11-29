@@ -1,3 +1,4 @@
 node_modules
 build
-stuff
+client/stuff
+client/node_modules
