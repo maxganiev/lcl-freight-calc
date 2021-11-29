@@ -1,0 +1,200 @@
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Montserrat' !important;
+}
+
+//variables
+
+//font sizes:
+$fs-sm: 0.75rem;
+$fs-md: 0.8rem;
+
+//font colors:
+$fs-clr-white: #fff;
+
+//bg-colors:
+$bg-clr-white: rgba(250, 250, 250, 0.85);
+$bg-clr-black: rgba(0, 0, 0, 0.75);
+
+body {
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../assets/motor-bg.svg) center center/contain;
+	background-repeat: no-repeat;
+
+	main {
+		position: relative;
+		width: 90%;
+		height: 100%;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1.2fr 2fr;
+
+		button,
+		input,
+		select,
+		label {
+			font-size: $fs-sm !important;
+		}
+
+		.alert {
+			position: absolute !important;
+			width: 100% !important;
+			display: flex !important;
+			justify-content: center;
+			transform: translateY(-30%);
+			animation-name: animate-alert;
+			animation-duration: 0.4s;
+			animation-iteration-count: 1;
+			animation-fill-mode: forwards;
+			animation-direction: normal;
+			animation-timing-function: ease-in;
+		}
+
+		.spinner {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.6);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			.d-flex.justify-content-center {
+				.spinner-border {
+					width: 4rem !important;
+					height: 4rem !important;
+				}
+			}
+		}
+
+		%calculator-options-shared {
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+			text-align: center;
+			font-size: $fs-md;
+		}
+
+		.calculator {
+			&-navPanel {
+				@extend %calculator-options-shared;
+				grid-row: 1/3;
+				justify-content: space-evenly;
+				align-items: center;
+				padding: 2%;
+				background-color: $bg-clr-white;
+
+				%btn-options-shared {
+					width: 100%;
+					height: 5%;
+					border: none;
+					border-radius: 10px;
+					visibility: hidden;
+					background-color: $bg-clr-black !important;
+					color: $fs-clr-white !important;
+
+					&:hover {
+						cursor: pointer;
+						opacity: 0.8;
+						transition: opacity 0.8s ease-in-out;
+					}
+				}
+
+				.btn {
+					&-getResults {
+						@extend %btn-options-shared;
+					}
+
+					&-returnToPrevState {
+						@extend %btn-options-shared;
+					}
+
+					&-Submit {
+						@extend %btn-options-shared;
+						visibility: visible;
+						height: auto;
+					}
+				}
+
+				.email-box {
+					width: 100%;
+					height: 30%;
+					transform: translate(-100%);
+					animation-name: animate-email-box;
+					animation-duration: 0.7s;
+					animation-iteration-count: 1;
+					animation-fill-mode: forwards;
+					animation-direction: normal;
+					animation-timing-function: ease-in;
+
+					.formData {
+						width: 100%;
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+					}
+				}
+			}
+
+			&-results {
+				@extend %calculator-options-shared;
+				align-items: flex-end;
+				justify-content: center;
+				margin-top: 5%;
+				font-weight: 700;
+				position: relative;
+
+				p {
+					background-color: $bg-clr-white;
+					width: 60%;
+					text-align: end;
+					padding-right: 2%;
+				}
+			}
+		}
+		.result {
+			font-weight: 800;
+			text-align: center;
+			background-color: $bg-clr-white;
+			.list {
+				line-height: 1.8rem;
+				font-size: $fs-sm;
+				.listItem {
+					list-style-type: none;
+					.span-listItem {
+						font-weight: 500 !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes animate-email-box {
+	from {
+		transform: translate(-100%);
+	}
+
+	to {
+		transform: translate(0%);
+	}
+}
+
+@keyframes animate-alert {
+	from {
+		transform: translateY(-100%);
+	}
+
+	to {
+		transform: translateY(0%);
+	}
+}
