@@ -26,54 +26,6 @@ body {
 	position: relative;
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../assets/motor-bg.svg) center center/contain;
 	background-repeat: no-repeat;
-	overflow-x: hidden;
-
-	.disclaimer {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.8);
-		transform: translateX(100%);
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		color: $bg-clr-white;
-
-		p {
-			padding: 0% 2% 0% 2%;
-		}
-
-		.btn-disclaimer {
-			position: absolute;
-			left: -81px;
-			top: 50%;
-			transform: rotate(90deg);
-			height: 5%;
-			border: none;
-			border-radius: 10px;
-			background-color: $bg-clr-black !important;
-			color: $fs-clr-white !important;
-			font-size: $fs-sm;
-			width: 132px;
-		}
-
-		.icn-close {
-			position: absolute;
-			top: 1%;
-			right: 2%;
-			object-fit: contain;
-			width: 4%;
-			height: 4%;
-			z-index: 10;
-
-			&:hover {
-				cursor: pointer;
-			}
-		}
-	}
 
 	main {
 		position: relative;

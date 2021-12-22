@@ -11,45 +11,7 @@ body {
   height: 100vh;
   position: relative;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../assets/motor-bg.svg) center center/contain;
-  background-repeat: no-repeat;
-  overflow-x: hidden; }
-  body .disclaimer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    transform: translateX(100%);
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: rgba(250, 250, 250, 0.85); }
-    body .disclaimer p {
-      padding: 0% 2% 0% 2%; }
-    body .disclaimer .btn-disclaimer {
-      position: absolute;
-      left: -81px;
-      top: 50%;
-      transform: rotate(90deg);
-      height: 5%;
-      border: none;
-      border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.75) !important;
-      color: #fff !important;
-      font-size: 0.75rem;
-      width: 132px; }
-    body .disclaimer .icn-close {
-      position: absolute;
-      top: 1%;
-      right: 2%;
-      object-fit: contain;
-      width: 4%;
-      height: 4%;
-      z-index: 10; }
-      body .disclaimer .icn-close:hover {
-        cursor: pointer; }
+  background-repeat: no-repeat; }
   body main {
     position: relative;
     width: 90%;
