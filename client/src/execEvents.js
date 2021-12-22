@@ -135,14 +135,26 @@ export const execEvents = () => {
 				break;
 		}
 	});
+
+	////form event to sent data via ajax call:
+	document.body.addEventListener('submit', (e) => {
+		if (e.target.id === 'formData') {
+			e.preventDefault();
+			emailSender.sendEmail();
+
+			Array.from(e.target.children).forEach((child) => (child.value = child.id !== 'btn-Submit' ? '' : child.value));
+		}
+	});
+
+	////show disclaimer
+	document.getElementById('btn-disclaimer').addEventListener('click', (e) => {
+		e.target.parentElement.style.transform = 'translateX(0%)';
+		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
+	});
+
+	////hide disclaimer
+	document.getElementById('icn-close').addEventListener('click', (e) => {
+		e.target.parentElement.style.transform = 'translateX(100%)';
+		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
+	});
 };
-
-////form event to sent data via ajax call:
-document.body.addEventListener('submit', (e) => {
-	if (e.target.id === 'formData') {
-		e.preventDefault();
-		emailSender.sendEmail();
-
-		Array.from(e.target.children).forEach((child) => (child.value = child.id !== 'btn-Submit' ? '' : child.value));
-	}
-});
