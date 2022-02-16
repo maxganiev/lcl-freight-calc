@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
 require_once('config.php');
+file_put_contents("php://stderr", "something happened!");
 
 $callback = $_POST['callback'];
 
