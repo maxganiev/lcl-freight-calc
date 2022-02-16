@@ -5,14 +5,14 @@ echo 2;
 
 use Dotenv\Dotenv;
 echo 3;
-echo __DIR__;
 
-if (file_exists(__DIR__ . '/.env')){
+
 $dotenv = Dotenv::createImmutable(__DIR__);
 echo 4;
+echo $dotenv;
 $dotenv->load();
 echo 5;
-};
+
 
 
 
