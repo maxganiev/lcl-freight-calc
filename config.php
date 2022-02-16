@@ -1,17 +1,14 @@
 <?php
-echo 1;
+
 require_once('vendor/autoload.php');
-echo 2;
+
 
 use Dotenv\Dotenv;
-echo 3;
 
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-echo 4;
-echo $dotenv;
-$dotenv->load();
-echo 5;
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+
+$dotenv->safeLoad();
 
 
 
