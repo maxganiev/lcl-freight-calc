@@ -155,9 +155,20 @@ export const data_Selector = {
 	setCurrency: async function () {
 		try {
 			spinner.addSpinner();
-			const request = await fetch('/api/currconvkey');
+
+			const formData = new FormData();
+			formData.append('callback', 'getCurrencyAPI');
+
+			const request = await fetch('../proxy.php', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+				},
+				body: formData,
+			});
 			const response = await request.json();
-			this.currency = response.USD_RUB[this.today];
+			this.currency = JSON.parse(response).USD_RUB[this.today];
+
 			spinner.removeSpinner();
 		} catch (err) {
 			spinner.removeSpinner();

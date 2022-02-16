@@ -8,9 +8,9 @@
     "start": "webpack-dev-server --output-public-path=/build/  --mode development --progress --open --hot",
     "build": "webpack --mode production --progress",
     "sass": "node-sass -w style_precomp/ -o style_comp/ --recursive",
-    "dev": "concurrently \"npm run start\" \"npm run sass\""
+    "watch": "webpack --watch --mode development",
+    "dev": "concurrently \"npm run watch\" \"npm run sass\""
   },
-  "author": "Brad Traversy",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.3",

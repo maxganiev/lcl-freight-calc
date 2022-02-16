@@ -70,15 +70,26 @@ export const emailSender = {
 		} else
 			try {
 				spinner.addSpinner();
-				const reqGmailPass = await fetch('/api/gpass');
-				const resGmailPass = await reqGmailPass.json();
+
+				const formData = new FormData();
+				formData.append('callback', 'getGmailApi');
+
+				const request = await fetch('../proxy.php', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+					},
+					body: formData,
+				});
+
+				const res = await request.json();
 
 				await Email.send({
 					Host: 'smtp.gmail.com',
-					Username: 'max.ganiev1908@gmail.com',
-					Password: resGmailPass.gpass,
+					Username: 'eservice.robot@gmail.com',
+					Password: atob(atob(res)),
 					To: eAddress,
-					From: 'max.ganiev1908@gmail.com',
+					From: 'eservice.robot@gmail.com',
 					Subject: `Номер проработки: ПР-${inquiry}`,
 					Body: eBody,
 				});
