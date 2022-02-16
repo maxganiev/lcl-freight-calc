@@ -1,3 +1,4 @@
+vendor/
 client/node_modules/
 client/stuff/
 .env
