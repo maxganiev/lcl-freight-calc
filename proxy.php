@@ -1,6 +1,6 @@
 <?php
-require_once('config.php');
 echo 123;
+require_once('config.php');
 
 $callback = $_POST['callback'];
 
