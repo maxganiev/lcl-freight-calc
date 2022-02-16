@@ -23,7 +23,8 @@ function getCurrencyAPI()
 
 
   if ($http_response_header[0] !== 'HTTP/1.1 200 OK') {
-    returnJson('Some problems have occured while fetching the data...');
+     header("HTTP/1.1 404 Not Found");
+    exit(returnJson("Error: Some problems have occured while fetching the data..."));
   } else {
     returnJson($res);
   };
