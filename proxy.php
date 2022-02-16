@@ -1,6 +1,5 @@
 <?php
-echo $_SERVER['PHP_SELF'];
-echo 123;
+
 require_once('config.php');
 file_put_contents("php://stderr", "something happened!");
 

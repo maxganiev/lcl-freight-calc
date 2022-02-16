@@ -5,10 +5,15 @@ echo 2;
 
 use Dotenv\Dotenv;
 echo 3;
+echo __DIR__;
+
+if (file_exists(__DIR__ . '/.env')){
 $dotenv = Dotenv::createImmutable(__DIR__);
 echo 4;
 $dotenv->load();
 echo 5;
+};
+
 
 
 define('CURRCONV_KEY', $_ENV["CURRCONV_API_KEY"]);
