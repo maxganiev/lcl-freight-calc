@@ -11,6 +11,7 @@
     "watch": "webpack --watch --mode development",
     "dev": "concurrently \"npm run watch\" \"npm run sass\""
   },
+
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.3",

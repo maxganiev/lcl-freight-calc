@@ -167,8 +167,8 @@ export const data_Selector = {
 				body: formData,
 			});
 			const response = await request.json();
-			this.currency = JSON.parse(response).USD_RUB[this.today];
 
+			this.currency = JSON.parse(response).USD_RUB[this.today];
 			spinner.removeSpinner();
 		} catch (err) {
 			spinner.removeSpinner();

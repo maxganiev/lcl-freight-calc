@@ -20,7 +20,7 @@ $fs-clr-white: #fff;
 $bg-clr-white: rgba(250, 250, 250, 0.85);
 $bg-clr-black: rgba(0, 0, 0, 0.75);
 
-body {
+.body-index {
 	width: 100%;
 	height: 100vh;
 	position: relative;
@@ -75,7 +75,7 @@ body {
 		}
 	}
 
-	main {
+	.main-index {
 		position: relative;
 		width: 90%;
 		height: 100%;
@@ -223,6 +223,40 @@ body {
 					}
 				}
 			}
+		}
+	}
+}
+
+.body-auth {
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	background-color: $bg-clr-black;
+	overflow-x: hidden;
+	color: $fs-clr-white;
+	font-size: $fs-md;
+
+	.auth-form {
+		width: 50%;
+		height: 50%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		line-height: 1.6rem;
+		transform: translateX(50%) translateY(50%);
+		position: relative;
+		font-size: $fs-md;
+
+		.btn {
+			color: $fs-clr-white !important;
+			position: absolute !important;
+			bottom: 2% !important;
+		}
+
+		input[type='text'],
+		input[type='email'] {
+			width: 80% !important;
 		}
 	}
 }

@@ -1,4 +1,5 @@
+client/node_modules
+client/stuff
+client/assets/pricelists
 vendor/
-client/node_modules/
-client/stuff/
 .env

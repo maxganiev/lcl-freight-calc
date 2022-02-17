@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet preload prefetch" href="./fonts.css" as="style" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="./style_comp/style.css" />
+		<link rel="icon" type="image/png" href="assets/wheel.png" sizes="16x16" />
+		<!-- <script defer src="app.bundle.js"></script> -->
+		<title>LCL калькулятор | Авторизация</title>
+	</head>
+	<body class="body-auth">
+		<form class="auth-form" id="auth-form">
+			<label for="auth-email"> Введите электронный адрес </label>
+			<input type="email" id="auth-email" name="auth-email" />
+
+			<label for="auth-pass"> Введите пароль </label>
+			<input type="text" id="auth-pass" name="auth-pass" />
+
+			<input type="submit" class="btn" id="auth-submit" data-bs-toggle="button" aria-pressed="true" value="Войти" />
+		</form>
+	</body>
+</html>
