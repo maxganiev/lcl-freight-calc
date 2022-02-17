@@ -1,3 +1,7 @@
+if (localStorage.getItem('lcl_ls')) {
+	window.location.replace('fileuploader.html');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	const authForm = document.getElementById('auth-form');
 	const authEmail = document.getElementById('auth-email');
@@ -17,8 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				Accept: 'application/json',
 			});
 
-			const res = await req.json();
-			console.log(res);
+			if (req.status === 200) {
+				const res = await req.json();
+				console.log(res);
+
+				localStorage.setItem('lcl_ls', JSON.stringify(res));
+
+				setTimeout(() => {
+					window.location.replace('fileuploader.html');
+				}, 200);
+			}
 		} catch (error) {
 			console.log(error);
 		}

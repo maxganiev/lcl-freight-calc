@@ -26,7 +26,8 @@ if (AUTH_EMAIL && AUTH_PASS) {
 function authUser($isUser)
 {
   if ($isUser) {
-    echo json_encode('User is authenticated');
+    $user = [$_POST['auth_email'] => $_POST['auth_pass'], 'loggedin' => time() * 1000];
+    echo json_encode($user);
   } else {
     header("HTTP/1.1 403 Access denied");
     exit(json_encode('User doesn\'t exist'));
