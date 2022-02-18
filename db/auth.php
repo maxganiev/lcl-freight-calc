@@ -1,42 +1,61 @@
 <?php
 require('dbconn.php');
-
-//creating a query to get data from certain table in db:
-$query = 'SELECT * FROM `userdata`';
-
-//get result of quering:
-$res = mysqli_query($connection, $query);
-$data = mysqli_fetch_all($res, MYSQLI_ASSOC);
-
+require('jwt.php');
 
 define('AUTH_EMAIL', base64_decode(urldecode($_POST['auth_email'])));
 define('AUTH_PASS', base64_decode(urldecode($_POST['auth_pass'])));
 
-$userExists = false;
-
 if (AUTH_EMAIL && AUTH_PASS) {
-  foreach ($data as $key => $arr) {
-    $userExists =  (in_array(AUTH_EMAIL, array_column($data, 'EMAIL')) && in_array(AUTH_PASS, array_column($data, 'PASSWORD'))) ?  true : false;
-  }
+  //creating a query to get a specific user from db:
+  $query = "SELECT * FROM userdata WHERE EMAIL = '" . mysqli_real_escape_string($connection, AUTH_EMAIL) . "'" . "AND PASSWORD = '" . mysqli_real_escape_string($connection, AUTH_PASS) . "'";
 
-  authUser($userExists);
-}
+  //get result of quering:
+  $res = mysqli_query($connection, $query);
+  $data = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
+  $userExists =  count($data);
 
-function authUser($isUser)
-{
-  if ($isUser) {
-    $user = [$_POST['auth_email'] => $_POST['auth_pass'], 'loggedin' => time() * 1000];
-    echo json_encode($user);
+  if ($userExists !== 0) {
+    $headers = ['alg' => 'HS256', 'typ' => 'JWT'];
+    $payload = ['email' => $_POST['auth_email'], 'loggedin' => time() * 1000];
+
+    $jwt = generate_jwt($headers, $payload);
+
+    $token_query =  "UPDATE userdata SET TOKEN = '$jwt' WHERE EMAIL = '" . mysqli_real_escape_string($connection, AUTH_EMAIL) . "'" . "AND PASSWORD = '" . mysqli_real_escape_string($connection, AUTH_PASS) . "'";
+
+    mysqli_query($connection, $token_query);
+
+    $jsonRes = ['token' => $jwt, 'loggedin' => time() * 1000];
+    echo json_encode($jsonRes);
   } else {
     header("HTTP/1.1 403 Access denied");
     exit(json_encode('User doesn\'t exist'));
   }
-};
 
+  //free res:
+  mysqli_free_result($res);
+  //closing connection:
+  mysqli_close($connection);
+} else {
+  define('AUTH_TOKEN', $_POST['auth_token']);
 
-//free res:
-mysqli_free_result($res);
+  if (AUTH_TOKEN) {
+    $query = "SELECT * FROM userdata WHERE TOKEN = '" . mysqli_real_escape_string($connection, AUTH_TOKEN) . "'";
+    $res = mysqli_query($connection, $query);
+    $data = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
-//closing connection:
-mysqli_close($connection);
+    $userIsAuthorized =  count($data);
+
+    if ($userIsAuthorized !== 0) {
+      echo 'OK';
+    } else {
+      header("HTTP/1.1 403 Access denied");
+      exit(json_encode('Token got expired'));
+    }
+
+    //free res:
+    mysqli_free_result($res);
+    //closing connection:
+    mysqli_close($connection);
+  }
+}
