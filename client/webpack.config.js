@@ -3,6 +3,8 @@ const path = require('path');
 module.exports = {
 	entry: {
 		app: ['@babel/polyfill', './src/index.js'],
+		auth: ['@babel/polyfill', './src/auth/auth.js'],
+		fileuploader: ['@babel/polyfill', './src/fileuploader/fileupload.js'],
 	},
 
 	mode: process.env.NODE_ENV === 'production' || process.env.NODE_ENV ? 'production' : 'development',
@@ -11,7 +13,7 @@ module.exports = {
 
 	output: {
 		path: path.resolve(__dirname, './'),
-		filename: 'app.bundle.js',
+		filename: '[name].bundle.js',
 	},
 	module: {
 		rules: [

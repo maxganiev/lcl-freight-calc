@@ -1,3 +1,5 @@
+import { setAlert } from '../alert';
+
 (async function () {
 	if (localStorage.getItem('lcl_ls')) {
 		const token = JSON.parse(localStorage.getItem('lcl_ls')).token;
@@ -37,13 +39,13 @@
 
 				if (req.status === 200) {
 					const res = await req.json();
-					console.log(res);
-
 					localStorage.setItem('lcl_ls', JSON.stringify(res));
 
 					setTimeout(() => {
 						window.location.replace('fileuploader.html');
 					}, 200);
+				} else {
+					setAlert('err-fillDetails', 'Отказано в доступе');
 				}
 			} catch (error) {
 				console.log(error);

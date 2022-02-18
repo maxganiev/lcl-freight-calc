@@ -13,10 +13,22 @@
 		/>
 		<link rel="stylesheet" href="./style_comp/style.css" />
 		<link rel="icon" type="image/png" href="assets/wheel.png" sizes="16x16" />
-		<script src="fileupload.js" defer></script>
+		<script src="fileuploader.bundle.js" defer></script>
 		<title>LCL калькулятор | Загрузить таблицу</title>
 	</head>
 	<body class="body-fileuploader">
-		<h3>hi there!</h3>
+		<main>
+			<form class="fileuploader-form" id="fileuploader-form">
+				<input type="file" name="fileupload" id="fileupload" accept=".csv" />
+				<input
+					type="submit"
+					class="btn"
+					id="file-submit"
+					data-bs-toggle="button"
+					aria-pressed="true"
+					value="Загрузить таблицу"
+				/>
+			</form>
+		</main>
 	</body>
 </html>

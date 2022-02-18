@@ -6,6 +6,19 @@
   box-sizing: border-box;
   font-family: 'Montserrat' !important; }
 
+.alert {
+  position: absolute !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+  transform: translateY(-30%);
+  animation-name: animate-alert;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-direction: normal;
+  animation-timing-function: ease-in; }
+
 .body-index {
   width: 100%;
   height: 100vh;
@@ -62,18 +75,6 @@
     .body-index .main-index select,
     .body-index .main-index label {
       font-size: 0.75rem !important; }
-    .body-index .main-index .alert {
-      position: absolute !important;
-      width: 100% !important;
-      display: flex !important;
-      justify-content: center;
-      transform: translateY(-30%);
-      animation-name: animate-alert;
-      animation-duration: 0.4s;
-      animation-iteration-count: 1;
-      animation-fill-mode: forwards;
-      animation-direction: normal;
-      animation-timing-function: ease-in; }
     .body-index .main-index .spinner {
       position: absolute;
       top: 0;
@@ -153,7 +154,8 @@
           .body-index .main-index .result .list .listItem .span-listItem {
             font-weight: 500 !important; }
 
-.body-auth {
+.body-auth,
+.body-fileuploader {
   width: 100%;
   height: 100vh;
   position: relative;
@@ -161,24 +163,45 @@
   overflow-x: hidden;
   color: #fff;
   font-size: 0.8rem; }
-  .body-auth .auth-form {
-    width: 50%;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.6rem;
-    transform: translateX(50%) translateY(50%);
+  .body-auth main,
+  .body-fileuploader main {
     position: relative;
-    font-size: 0.8rem; }
-    .body-auth .auth-form .btn {
-      color: #fff !important;
-      position: absolute !important;
-      bottom: 2% !important; }
-    .body-auth .auth-form input[type='text'],
-    .body-auth .auth-form input[type='email'] {
-      width: 80% !important; }
+    width: 100%;
+    height: 100%; }
+    .body-auth main .auth-form,
+    .body-auth main .fileuploader-form,
+    .body-fileuploader main .auth-form,
+    .body-fileuploader main .fileuploader-form {
+      width: 50%;
+      height: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.6rem;
+      transform: translateX(50%) translateY(50%);
+      position: relative;
+      font-size: 0.8rem; }
+      .body-auth main .auth-form .btn,
+      .body-auth main .fileuploader-form .btn,
+      .body-fileuploader main .auth-form .btn,
+      .body-fileuploader main .fileuploader-form .btn {
+        color: #fff !important;
+        position: absolute !important;
+        bottom: 2% !important; }
+      .body-auth main .auth-form input[type='text'],
+      .body-auth main .auth-form input[type='email'],
+      .body-auth main .auth-form input[type='file'],
+      .body-auth main .fileuploader-form input[type='text'],
+      .body-auth main .fileuploader-form input[type='email'],
+      .body-auth main .fileuploader-form input[type='file'],
+      .body-fileuploader main .auth-form input[type='text'],
+      .body-fileuploader main .auth-form input[type='email'],
+      .body-fileuploader main .auth-form input[type='file'],
+      .body-fileuploader main .fileuploader-form input[type='text'],
+      .body-fileuploader main .fileuploader-form input[type='email'],
+      .body-fileuploader main .fileuploader-form input[type='file'] {
+        width: 80% !important; }
 
 @keyframes animate-email-box {
   from {

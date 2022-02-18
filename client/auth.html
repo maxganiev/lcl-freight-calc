@@ -13,18 +13,20 @@
 		/>
 		<link rel="stylesheet" href="./style_comp/style.css" />
 		<link rel="icon" type="image/png" href="assets/wheel.png" sizes="16x16" />
-		<script src="auth.js" defer></script>
+		<script src="auth.bundle.js" defer></script>
 		<title>LCL калькулятор | Авторизация</title>
 	</head>
 	<body class="body-auth">
-		<form class="auth-form" id="auth-form">
-			<label for="auth-email"> Введите электронный адрес </label>
-			<input type="email" id="auth-email" name="auth-email" />
+		<main>
+			<form class="auth-form" id="auth-form">
+				<label for="auth-email"> Введите электронный адрес </label>
+				<input type="email" id="auth-email" name="auth-email" />
 
-			<label for="auth-pass"> Введите пароль </label>
-			<input type="text" id="auth-pass" name="auth-pass" />
+				<label for="auth-pass"> Введите пароль </label>
+				<input type="text" id="auth-pass" name="auth-pass" />
 
-			<input type="submit" class="btn" id="auth-submit" data-bs-toggle="button" aria-pressed="true" value="Войти" />
-		</form>
+				<input type="submit" class="btn" id="auth-submit" data-bs-toggle="button" aria-pressed="true" value="Войти" />
+			</form>
+		</main>
 	</body>
 </html>

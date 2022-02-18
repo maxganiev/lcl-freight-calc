@@ -20,6 +20,20 @@ $fs-clr-white: #fff;
 $bg-clr-white: rgba(250, 250, 250, 0.85);
 $bg-clr-black: rgba(0, 0, 0, 0.75);
 
+.alert {
+	position: absolute !important;
+	width: 100% !important;
+	display: flex !important;
+	justify-content: center;
+	transform: translateY(-30%);
+	animation-name: animate-alert;
+	animation-duration: 0.4s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	animation-direction: normal;
+	animation-timing-function: ease-in;
+}
+
 .body-index {
 	width: 100%;
 	height: 100vh;
@@ -88,20 +102,6 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 		select,
 		label {
 			font-size: $fs-sm !important;
-		}
-
-		.alert {
-			position: absolute !important;
-			width: 100% !important;
-			display: flex !important;
-			justify-content: center;
-			transform: translateY(-30%);
-			animation-name: animate-alert;
-			animation-duration: 0.4s;
-			animation-iteration-count: 1;
-			animation-fill-mode: forwards;
-			animation-direction: normal;
-			animation-timing-function: ease-in;
 		}
 
 		.spinner {
@@ -227,7 +227,8 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 	}
 }
 
-.body-auth {
+.body-auth,
+.body-fileuploader {
 	width: 100%;
 	height: 100vh;
 	position: relative;
@@ -236,27 +237,35 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 	color: $fs-clr-white;
 	font-size: $fs-md;
 
-	.auth-form {
-		width: 50%;
-		height: 50%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		line-height: 1.6rem;
-		transform: translateX(50%) translateY(50%);
+	main {
 		position: relative;
-		font-size: $fs-md;
+		width: 100%;
+		height: 100%;
 
-		.btn {
-			color: $fs-clr-white !important;
-			position: absolute !important;
-			bottom: 2% !important;
-		}
+		.auth-form,
+		.fileuploader-form {
+			width: 50%;
+			height: 50%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			line-height: 1.6rem;
+			transform: translateX(50%) translateY(50%);
+			position: relative;
+			font-size: $fs-md;
 
-		input[type='text'],
-		input[type='email'] {
-			width: 80% !important;
+			.btn {
+				color: $fs-clr-white !important;
+				position: absolute !important;
+				bottom: 2% !important;
+			}
+
+			input[type='text'],
+			input[type='email'],
+			input[type='file'] {
+				width: 80% !important;
+			}
 		}
 	}
 }
