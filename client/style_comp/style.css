@@ -19,6 +19,21 @@
   animation-direction: normal;
   animation-timing-function: ease-in; }
 
+.spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20; }
+  .spinner .d-flex.justify-content-center .spinner-border {
+    width: 4rem !important;
+    height: 4rem !important; }
+
 .body-index {
   width: 100%;
   height: 100vh;
@@ -75,19 +90,6 @@
     .body-index .main-index select,
     .body-index .main-index label {
       font-size: 0.75rem !important; }
-    .body-index .main-index .spinner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center; }
-      .body-index .main-index .spinner .d-flex.justify-content-center .spinner-border {
-        width: 4rem !important;
-        height: 4rem !important; }
     .body-index .main-index .calculator-navPanel, .body-index .main-index .calculator-results {
       display: flex;
       flex-direction: column;

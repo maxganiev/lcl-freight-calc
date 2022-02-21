@@ -50,9 +50,11 @@ export const execEvents = () => {
 		) {
 			setAlert('err-fillDetails', 'Заполните все необходимые поля!');
 		} else {
-			await freightCalc.getTotalTransportationCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
+			//	await freightCalc.getTotalTransportationCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
 			await ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
 			await ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
+
+			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
 		}
 	};
 

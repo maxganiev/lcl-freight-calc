@@ -2,4 +2,5 @@ client/node_modules
 client/stuff
 client/assets/pricelists
 vendor/
+config.php
 .env

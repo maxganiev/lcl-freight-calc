@@ -1,4 +1,5 @@
 import { setAlert } from '../alert';
+import { spinner } from '../spinner';
 
 (async function () {
 	if (localStorage.getItem('lcl_ls')) {
@@ -6,6 +7,7 @@ import { setAlert } from '../alert';
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
+			spinner.addSpinner();
 			const req = await fetch('../db/auth.php', {
 				method: 'POST',
 				body: formData,
@@ -13,6 +15,7 @@ import { setAlert } from '../alert';
 			});
 
 			if (req.status === 200) {
+				spinner.removeSpinner();
 				window.location.replace('fileuploader.html');
 			}
 		} catch (error) {
@@ -31,6 +34,7 @@ import { setAlert } from '../alert';
 			formData.append('auth_pass', encodeURIComponent(window.btoa(authPass.value)));
 
 			try {
+				spinner.addSpinner();
 				const req = await fetch('../db/auth.php', {
 					method: 'POST',
 					body: formData,
@@ -38,6 +42,7 @@ import { setAlert } from '../alert';
 				});
 
 				if (req.status === 200) {
+					spinner.removeSpinner();
 					const res = await req.json();
 					localStorage.setItem('lcl_ls', JSON.stringify(res));
 

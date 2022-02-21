@@ -1,4 +1,5 @@
 import { setAlert } from '../alert';
+import { spinner } from '../spinner';
 
 (async function () {
 	if (localStorage.getItem('lcl_ls')) {
@@ -6,6 +7,7 @@ import { setAlert } from '../alert';
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
+			spinner.addSpinner();
 			const req = await fetch('../db/auth.php', {
 				method: 'POST',
 				body: formData,
@@ -13,6 +15,7 @@ import { setAlert } from '../alert';
 			});
 
 			if (req.status === 200) {
+				spinner.removeSpinner();
 				const form = document.getElementById('fileuploader-form');
 				const fileupload = document.getElementById('fileupload');
 
@@ -22,11 +25,8 @@ import { setAlert } from '../alert';
 					'exp_rail_cn_center_south',
 					'exp_air_cn',
 					'exp_air_kor',
-					'imp_rail_vorsino',
-					'imp_air_svo1',
-					'imp_air_svo2',
-					'imp_air_dme',
-					'imp_air_led',
+					'imp_rail',
+					'imp_air',
 				];
 
 				//.csv validation:
@@ -60,12 +60,14 @@ import { setAlert } from '../alert';
 						);
 
 						try {
+							spinner.addSpinner();
 							const req = await fetch('../db/uploadfile.php', {
 								method: 'POST',
 								body: formData,
 							});
 
 							if (req.status === 200) {
+								spinner.removeSpinner();
 								const res = await req.json();
 								setAlert('success', res);
 								fileupload.value = '';

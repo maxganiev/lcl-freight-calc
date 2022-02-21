@@ -20,6 +20,7 @@ $fs-clr-white: #fff;
 $bg-clr-white: rgba(250, 250, 250, 0.85);
 $bg-clr-black: rgba(0, 0, 0, 0.75);
 
+//service classes:
 .alert {
 	position: absolute !important;
 	width: 100% !important;
@@ -34,6 +35,27 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 	animation-timing-function: ease-in;
 }
 
+.spinner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 20;
+
+	.d-flex.justify-content-center {
+		.spinner-border {
+			width: 4rem !important;
+			height: 4rem !important;
+		}
+	}
+}
+
+//main nested classes:
 .body-index {
 	width: 100%;
 	height: 100vh;
@@ -102,25 +124,6 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 		select,
 		label {
 			font-size: $fs-sm !important;
-		}
-
-		.spinner {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.6);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			.d-flex.justify-content-center {
-				.spinner-border {
-					width: 4rem !important;
-					height: 4rem !important;
-				}
-			}
 		}
 
 		%calculator-options-shared {
