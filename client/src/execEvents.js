@@ -42,7 +42,6 @@ export const execEvents = () => {
 	////calculate and get results:
 	document.getElementById('btn-getResults').onclick = async () => {
 		const { delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax } = data_Selector;
-
 		if (
 			Array.from(document.querySelectorAll('.input-param')).some(
 				(elem) => (elem.value === '' || Number(elem.value) === 0) && elem.id !== 'input-tax' && elem.id !== 'input-currency'
@@ -50,11 +49,9 @@ export const execEvents = () => {
 		) {
 			setAlert('err-fillDetails', 'Заполните все необходимые поля!');
 		} else {
-			await freightCalc.getTotalTransportationCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
-			await ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
-			await ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
-
-			//await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
+			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
+			ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
+			ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
 		}
 	};
 

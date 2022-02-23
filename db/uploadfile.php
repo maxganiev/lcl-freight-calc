@@ -18,9 +18,9 @@ if ($_FILES['fileupload']['name'] !== '') {
     $removal =  'DELETE FROM ' . TABLE_NAME;
 
     if (mysqli_query($connection, $removal)) {
-      $printMsg[] = 'Table successfully updated';
+      $printMsg[] = 'Таблица успешно обновлена.';
     } else {
-      $printMsg[] = 'A problem has occured while updating the table';
+      $printMsg[] = 'Возникла проблема при загрузке таблицы.';
     }
   }
 
@@ -86,10 +86,10 @@ if ($_FILES['fileupload']['name'] !== '') {
 
 
   if (!$qr) {
-    $printMsg[] = 'Upload failed';
+    $printMsg[] = 'Проверьте заполнение таблицы';
   } else {
-    $printMsg[] = 'Upload was successful';
-    $printMsg[] = 'File has been successfully uploaded to db';
+    $printMsg[] = 'Загрузка успешна.';
+    $printMsg[] = 'Файл добавлен.';
   }
 } else {
   $printMsg[] = 'Append the file!';

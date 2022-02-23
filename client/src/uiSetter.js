@@ -63,14 +63,14 @@ export const ui_Setter = {
 	},
 
 	////apend or remove emailBox against btnToGetResults click ev:
-	setMailForm: async function (totalTransportationCost, selectionDataArr) {
+	setMailForm: function (totalTransportationCost, selectionDataArr) {
 		totalTransportationCost !== 0 && selectionDataArr.length === this.maxNumberOfSelectors
 			? emailSender.setFormBody(this.calculatorNavPanel)
 			: emailSender.removeFormBody(this.calculatorNavPanel);
 	},
 
 	////print calc result:
-	printRes: async function (resultToPrint, selectionDataArr) {
+	printRes: function (resultToPrint, selectionDataArr) {
 		this.calcRes = new Intl.NumberFormat('ru-RU').format(resultToPrint.toFixed(2));
 
 		while (this.calculatorResults.nextElementSibling && this.calculatorResults.nextElementSibling.className.includes('result')) {
@@ -117,10 +117,8 @@ export const ui_Setter = {
 			'Страна отправки',
 			'Условия поставки',
 			'Порт доставки',
-			'Стоимость пикапа (USD)',
-			'Стоимость фрахта (USD)',
-			'Стоимость локальных расходов в стране отправки (USD)',
-			'Стоимость локальных расходов в стране назначения (руб.)',
+			'Итоговая стоимость расходов в стране отправки (USD)',
+			'Итоговая стоимость локальных расходов в стране назначения (руб.)',
 			' Итоговая стоимость, включая НДС 20% (руб.)',
 		];
 
