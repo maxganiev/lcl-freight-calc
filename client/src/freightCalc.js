@@ -163,13 +163,6 @@ export const freightCalc = {
 
 			//nullifying all object props except totalTransportationCost and optionCostList once calculation is done to avoid old data to persist inside state with following miscalculation:
 			for (const prop in this) {
-				if (typeof this[prop] === 'object' && !Array.isArray(this[prop])) {
-					//if prop type is object - we need to access its props too:
-					for (const pr in this[prop]) {
-						this[prop][pr] = 0;
-					}
-				}
-
 				// if prop type is number - we just make it nullish:
 				if (typeof this[prop] === 'number' && prop !== 'totalTransportationCost') {
 					this[prop] = 0;
