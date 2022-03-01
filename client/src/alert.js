@@ -1,4 +1,4 @@
-export const setAlert = (type, msg) => {
+export const setAlert = (type, msg, timeout) => {
 	const main = document.querySelector('main');
 
 	while (main.firstElementChild.className.includes('alert')) {
@@ -25,7 +25,11 @@ export const setAlert = (type, msg) => {
 
 	main.insertAdjacentElement('afterbegin', alert);
 
+	if (timeout === undefined || typeof timeout === 'undefined') {
+		timeout = 3000;
+	}
+
 	setTimeout(() => {
 		alert.remove();
-	}, 3000);
+	}, timeout);
 };

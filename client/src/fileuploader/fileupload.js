@@ -49,6 +49,54 @@ import { execEvents } from './execEvents';
 						);
 						e.target.value = '';
 					}
+
+					//csv validation:
+					else {
+						const reader = new FileReader();
+
+						reader.onload = () => {
+							const csv_content = reader.result.split(';').reduce((acc, curr) => {
+								const t = curr.indexOf('\r\n') !== -1 ? curr.slice(0, curr.indexOf('\r\n')) : curr;
+								acc.push(t);
+
+								return acc;
+							}, []);
+
+							//for export pricelists:
+							if (e.target.files[0].name.includes('exp')) {
+								if (csv_content.some((data) => isNaN(Number(data)))) {
+									setAlert(
+										'err-fillDetails',
+										'Таблица содержит некорретные значения. Проверьте, что целая и дробная части разделены точкой, а не запятой. Убедитесь, что в таблице отсутствует текст.',
+										6000
+									);
+
+									e.target.value = '';
+								}
+							}
+
+							//for import pricelists:
+							else if (e.target.files[0].name.includes('imp')) {
+								const exceptions = ['SVO1', 'SVO2', 'LED', 'DME', 'VORSINO/ELECTROUGLI'];
+
+								if (
+									csv_content.some(
+										(data) => isNaN(Number(data)) && !exceptions.includes(data.toUpperCase().trim())
+									)
+								) {
+									setAlert(
+										'err-fillDetails',
+										'Таблица содержит недопустимые значения. Проверьте, что целая и дробная части разделены точкой, а не запятой. Для добавления новых терминалов/ станций доставки необходимо связаться с разработчиком.',
+										7000
+									);
+
+									e.target.value = '';
+								}
+							}
+						};
+
+						reader.readAsText(e.target.files[0]);
+					}
 				});
 
 				form.addEventListener('submit', async (e) => {

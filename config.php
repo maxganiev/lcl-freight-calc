@@ -2,7 +2,7 @@
 require_once('vendor/autoload.php');
 
 //change to PRODUCTION prior deployment:
-define('MODE', 'PRODUCTION');
+define('MODE', 'DEVELOPMENT');
 
 use Dotenv\Dotenv;
 

@@ -104,7 +104,9 @@ export const freightCalc = {
 				const portName = toLatinChars(portOfLading);
 
 				if (delMode === 'railMode') {
-					const prices = res.filter((data) => Number(data.CBM) >= workingWeight && data.PORT_NAME === portName)[0];
+					const prices = res.filter(
+						(data) => Number(data.CBM) >= workingWeight && data.PORT_NAME.toUpperCase().trim() === portName
+					)[0];
 					const { HANDLING_RATE_PER_CBM, LOADING_RATE_PER_CBM, TODOOR_DELIVERY } = prices;
 
 					this.importCharges =
@@ -112,7 +114,10 @@ export const freightCalc = {
 						Number(LOADING_RATE_PER_CBM) * workingWeight +
 						Number(TODOOR_DELIVERY);
 				} else if (delMode === 'airMode') {
-					const prices = res.filter((data) => Number(data.KGS) >= workingWeight && data.PORT_NAME === portName)[0];
+					const prices = res.filter(
+						(data) => Number(data.KGS) >= workingWeight && data.PORT_NAME.toUpperCase().trim() === portName
+					)[0];
+
 					const { AWB_RATE, CONSIGNEE_NOTIFICATION, HANDLING_RATE_PER_KG, LOADING_RATE_PER_KG, TODOOR_DELIVERY } =
 						prices;
 
@@ -133,7 +138,7 @@ export const freightCalc = {
 
 		function toLatinChars(word) {
 			if (word === 'Ворсино/ Электроугли') {
-				return 'VORSINO/ ELECTROUGLI';
+				return 'VORSINO/ELECTROUGLI';
 			} else {
 				return word;
 			}

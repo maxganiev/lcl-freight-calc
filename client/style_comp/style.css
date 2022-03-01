@@ -226,8 +226,6 @@ li {
           position: relative; }
           .body-auth .disclaimer .list li .list-expanded li .img-mask:hover,
           .body-fileuploader .disclaimer .list li .list-expanded li .img-mask:hover {
-            transform: scale(1.1);
-            transition: all 0.4s ease-in;
             cursor: pointer; }
           .body-auth .disclaimer .list li .list-expanded li .img-mask .img-slider,
           .body-fileuploader .disclaimer .list li .list-expanded li .img-mask .img-slider {
@@ -235,6 +233,14 @@ li {
             height: 80%;
             object-fit: contain;
             opacity: 1; }
+          .body-auth .disclaimer .list li .list-expanded li .img-mask .imgId,
+          .body-fileuploader .disclaimer .list li .list-expanded li .img-mask .imgId {
+            position: absolute;
+            bottom: 0;
+            left: 45%;
+            color: black;
+            font-weight: 600;
+            background: #fff; }
   .body-auth main,
   .body-fileuploader main {
     position: relative;

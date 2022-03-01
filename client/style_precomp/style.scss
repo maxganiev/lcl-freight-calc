@@ -327,8 +327,6 @@ li {
 							margin-left: 30%;
 							position: relative;
 							&:hover {
-								transform: scale(1.1);
-								transition: all 0.4s ease-in;
 								cursor: pointer;
 							}
 
@@ -337,6 +335,15 @@ li {
 								height: 80%;
 								object-fit: contain;
 								opacity: 1;
+							}
+
+							.imgId {
+								position: absolute;
+								bottom: 0;
+								left: 45%;
+								color: black;
+								font-weight: 600;
+								background: #fff;
 							}
 						}
 					}

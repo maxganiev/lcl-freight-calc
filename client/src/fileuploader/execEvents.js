@@ -35,7 +35,6 @@ export const execEvents = function () {
 	//DOM constants:
 	const link_to_expand_collapsible_list_01 = document.getElementById('link-expand-collapsible-01');
 	const link_to_collapse_collapsible_list_01 = document.getElementById('link-collapse-collapsible-01');
-	const imgId_01 = document.getElementById('imgId-01');
 	const link_to_expand_collapsible_list_02 = document.getElementById('link-expand-collapsible-02');
 	const link_to_collapse_collapsible_list_02 = document.getElementById('link-collapse-collapsible-02');
 	const link_to_expand_collapsible_list_03 = document.getElementById('link-expand-collapsible-03');
@@ -59,9 +58,9 @@ export const execEvents = function () {
 
 		const url = `./assets/brief/${dir}/`;
 		const img_srcs = srcs.map((src) => url + src);
-		lazyLoadImg(e, element, img_srcs);
+		lazyLoadImg(e, element, img_srcs, id);
 
-		document.body.style.height = document.body.scrollHeight * 1.3 + 'px';
+		document.body.style.height = document.body.scrollHeight * 1.25 + 'px';
 		body_screen_param.setBodyHeight(document.body.style.height);
 	}
 
@@ -76,12 +75,12 @@ export const execEvents = function () {
 		link.style.visibility = 'visible';
 		lazyLoadImg(e, element);
 
-		document.body.style.height = document.body.scrollHeight / 1.3 + 'px';
+		document.body.style.height = document.body.scrollHeight / 1.25 + 'px';
 		body_screen_param.setBodyHeight(document.body.style.height);
 	}
 
 	//lazy load imgs on click:
-	function lazyLoadImg(e, parentElem, imgSrcArr) {
+	function lazyLoadImg(e, parentElem, imgSrcArr, id) {
 		const img = Array.from(parentElem.children).filter(
 			(child) => child.firstElementChild && child.firstElementChild.className === 'img-mask'
 		)[0].firstElementChild.firstElementChild;
@@ -91,7 +90,7 @@ export const execEvents = function () {
 		if (e.target.id.includes('expand')) {
 			img.removeAttribute('data-src');
 			img.setAttribute('src', imgSrcArr[0]);
-			imgId_01.textContent = `1 из ${imgSrcArr.length}`;
+			document.getElementById(`imgId-${id}`).textContent = `1 из ${imgSrcArr.length}`;
 		} else {
 			img.removeAttribute('src');
 			img.setAttribute('data-src', '/');
@@ -104,14 +103,14 @@ export const execEvents = function () {
 			i > 0 ? i-- : (i = 0);
 			img.setAttribute('src', imgSrcArr[i]);
 
-			imgId_01.textContent = `${i + 1} из ${imgSrcArr.length}`;
+			document.getElementById(`imgId-${id}`).textContent = `${i + 1} из ${imgSrcArr.length}`;
 		}
 
 		function slideRight() {
 			i < imgSrcArr.length - 1 ? i++ : (i = imgSrcArr.length - 1);
 			img.setAttribute('src', imgSrcArr[i]);
 
-			imgId_01.textContent = `${i + 1} из ${imgSrcArr.length}`;
+			document.getElementById(`imgId-${id}`).textContent = `${i + 1} из ${imgSrcArr.length}`;
 		}
 
 		imgMask.onclick = (e) => {
@@ -137,7 +136,6 @@ export const execEvents = function () {
 						100 - portion
 					}%)`;
 
-					//	imgMask.style.transform = 'skew(-0.01turn, 2deg';
 					img.style.opacity = 0.6;
 					imgMask.style.cursor = 'pointer';
 				} else if (portion <= 30) {
