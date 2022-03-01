@@ -17,6 +17,111 @@
 		<title>LCL калькулятор | Загрузить таблицу</title>
 	</head>
 	<body class="body-fileuploader">
+		<a class="linkTo" href="index.html">
+			<img src="assets/calculator-solid.svg" alt="back to calc" title="Назад к калькулятору" />
+		</a>
+		<div id="disclaimer" class="disclaimer">
+			<button id="btn-disclaimer" class="btn btn-sm btn-disclaimer" data-bs-toggle="button" aria-pressed="true">Бриф</button>
+			<img src="./assets//times-solid.svg" id="icn-close" class="icn-close" alt="close-icn" />
+			<h3><strong> Бриф по загрузке таблиц </strong></h3>
+			<ul class="list" id="list-brief">
+				<li>
+					Ниже приведена подробная инструкция по составлению таблиц в такой формат, чтобы их можно было динамически
+					обновлять и подгружать в базу данных. Если вы не хотите формировать таблицы с нуля, то можно скачать
+					<a onclick="document.getElementById('download-samples').scrollIntoView()"> существующие образцы </a>
+					и в дальнейшем работать с ними.
+				</li>
+				<li>
+					На текущий момент присутствуют прайс-листы 4-х типов: прайсы на услуги до границы для ЖД и авиаперевозок, и
+					прайсы на услуги после границы для грузов,также прибывающих ЖД транспортом и по воздуху
+				</li>
+				<li>
+					На текущий момент доступны прайс-листы для следующих направлений:
+					<ul class="list">
+						<li><strong> ЖД Китай (Север) - Московская обл. </strong></li>
+						<li><strong> ЖД Китай (Центр, Юг) - Московская обл. </strong></li>
+						<li><strong> Авиа Китай - Москва, СПб </strong></li>
+						<li><strong> Авиа Корея - Москва, СПб </strong></li>
+					</ul>
+				</li>
+				<li>
+					Подгрузка таблиц построена таким образом, что система считывает название загружаемого файла, и по нему
+					автоматически заливает цены в базу данных, которая носит соответствующее название.
+				</li>
+				<li>
+					Наименование таблиц собирается по следующей логике:
+					<ul class="list">
+						<li>Для услуг "до границы":</li>
+						<li>
+							<strong> тип операции </strong> (exp - цены до границы)_<strong> тип доставки </strong>_<strong>
+								код страны, откуда осуществляется доставка </strong
+							>_<strong> город /регион отправки </strong>(при наличии), например: exp_rail_cn_north
+						</li>
+						<li>Для услуг "после границы":</li>
+						<li>
+							<strong> тип операции </strong> (imp - цены после границы)_<strong> тип доставки </strong>,
+							например: imp_rail
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					Разрешенные имена таблиц: <strong> exp_rail_cn_north </strong> (Китай ЖД, Север),
+					<strong>exp_rail_cn_center_south </strong> (Китай ЖД, Центр/ Юг), <strong> exp_air_cn </strong>(Китай авиа),
+					<strong>exp_air_kor </strong> (Корея авиа), <strong> imp_rail </strong> (локальные расходы на станции Ворсино/
+					Электроугли), <strong> imp_air </strong> (локальные расходы в аэропортах прилета Мск, СПб)
+				</li>
+				<li id="download-samples">
+					Образцы таблиц для заполнения можно скачать <a href="assets/samples.zip" download="samples"> тут </a>
+				</li>
+				<li>
+					Обратите внимание, что загружать необходимо <strong> таблицы без шапок </strong>, т.е. только фактические
+					данные. Образцы таблиц можно посмотреть в файле <strong> sample.xlsx </strong>
+					<br />
+					<a href="#" id="link-expand-collapsible-01" class="link-expand"> Подробнее </a>
+					<ul class="list list-collapsed" id="list-collapsible-01">
+						<li>
+							<div class="img-mask">
+								<img class="img-slider" data-src="/" alt="instruction slide" />
+								<p id="imgId-01" class="imgId"></p>
+							</div>
+						</li>
+						<li>*Перелистнуть изображение можно, щелкнув на его левую/ правую часть соответственно</li>
+						<li><a href="#" id="link-collapse-collapsible-01" class="link-collapse"> Свернуть </a></li>
+					</ul>
+				</li>
+				<li>
+					Значения загружаемых таблиц должны приводиться в десятичном формате, с округлением до 2-х знаков после
+					запятой. Целая и дробная часть должны разделяться точкой. В экселе по умолчанию стоит разделение запятыми. На
+					слайдах ниже показано, как заменить разделитель целой и дробной частей.
+					<br />
+					<a href="#" id="link-expand-collapsible-02" class="link-expand"> Подробнее </a>
+					<ul class="list list-collapsed" id="list-collapsible-02">
+						<li>
+							<div class="img-mask"><img class="img-slider" data-src="/" alt="instruction slide" /></div>
+						</li>
+						<li>*Визуальная реализация может отличаться в зависимости от версии Microsoft Office</li>
+						<li>**Перелистнуть изображение можно, щелкнув на его левую/ правую часть соответственно</li>
+						<li><a href="#" id="link-collapse-collapsible-02" class="link-collapse"> Свернуть </a></li>
+					</ul>
+				</li>
+				<li>Разрешена загрузка файлов в формате .csv</li>
+				<li>
+					В данный формат возможно конвертировать любую таблицу Excel. Для этого, в текущем открытом файле Excel
+					выберите "Сохранить как" и далее укажите формат "CSV (MS-DOS) (*.csv)"
+					<br />
+					<a href="#" id="link-expand-collapsible-03" class="link-expand"> Подробнее </a>
+					<ul class="list list-collapsed" id="list-collapsible-03">
+						<li>
+							<div class="img-mask"><img class="img-slider" data-src="/" alt="instruction slide" /></div>
+						</li>
+						<li>*Визуальная реализация может отличаться в зависимости от версии Microsoft Office</li>
+						<li>**Перелистнуть изображение можно, щелкнув на его левую/ правую часть соответственно</li>
+						<li><a href="#" id="link-collapse-collapsible-03" class="link-collapse"> Свернуть </a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 		<main>
 			<form class="fileuploader-form" id="fileuploader-form">
 				<input type="file" name="fileupload" id="fileupload" accept=".csv" />

@@ -1,5 +1,6 @@
 <?php
 require('dbconn.php');
+require('jwt.php');
 
 define('TABLE_NAME',  'delivery_pricelist_' . $_FILES['fileupload']['name']);
 
@@ -18,9 +19,9 @@ if ($_FILES['fileupload']['name'] !== '') {
     $removal =  'DELETE FROM ' . TABLE_NAME;
 
     if (mysqli_query($connection, $removal)) {
-      $printMsg[] = 'Таблица успешно обновлена.';
+      $printMsg[] = 'Таблица успешно обновлена';
     } else {
-      $printMsg[] = 'Возникла проблема при загрузке таблицы.';
+      $printMsg[] = 'Возникла проблема при обновлении таблицы';
     }
   }
 
@@ -86,15 +87,15 @@ if ($_FILES['fileupload']['name'] !== '') {
 
 
   if (!$qr) {
-    $printMsg[] = 'Проверьте заполнение таблицы';
+    header("HTTP/1.1 405 Not allowed");
+    exit(json_encode('Проверьте заполнение таблицы!'));
   } else {
-    $printMsg[] = 'Загрузка успешна.';
-    $printMsg[] = 'Файл добавлен.';
+    $printMsg[] = 'Загрузка успешна';
+    $printMsg[] = 'Файл добавлен';
   }
-} else {
-  $printMsg[] = 'Append the file!';
-}
 
+  regUser($connection);
+}
 
 $encoded = '';
 foreach ($printMsg as $msg) {
@@ -102,6 +103,49 @@ foreach ($printMsg as $msg) {
 }
 
 echo json_encode($encoded);
+
+
+//add user modified a table to the registry:
+function regUser($conn)
+{
+  $table_name = 'update_reg';
+  $req = "SELECT UPDATED_AT FROM " . $table_name;
+  $res = mysqli_query($conn, $req);
+
+  if ($res) {
+    $data = mysqli_fetch_all($res, MYSQLI_ASSOC);
+
+    $today = strtotime('today');
+    $date_from_DB = count($data) > 0 ? strtotime(reset($data[0])) : $today;
+
+    //$test = strtotime('2022-12-23 12:00:00');
+
+    //num of days last since first reg note:
+    $diff = ($today - $date_from_DB) / 60 / 60 / 24;
+
+
+    //if more than 3 months passed since very first inquiry - old values are removed from the reg table
+    if ($diff >= 90) {
+      $removal =  'DELETE FROM ' . $table_name;
+
+      if (!mysqli_query($conn, $removal)) {
+        header("HTTP/1.1 500 Internal error");
+        exit(0);
+      }
+    }
+  }
+
+
+  $user_token = base64url_decode($_POST['token']);
+  $filename = $_FILES['fileupload']['name'];
+
+  $qr = mysqli_query($conn, "INSERT INTO $table_name VALUES ('$filename', '$user_token', DEFAULT)");
+
+  if (!$qr) {
+    header("HTTP/1.1 500 Internal error");
+    exit(0);
+  }
+}
 
 
 //free res:

@@ -56,7 +56,7 @@ export const execEvents = () => {
 	};
 
 	////setting select option list to previous state:
-	document.getElementById('btn-returnToPrevState').onclick = async (e) => {
+	document.getElementById('btn-returnToPrevState').onclick = (e) => {
 		//data to populate options list using ui_Setter.populateOptionList() method; population starts with index 1, when data_Selector.selectionData.length > 0, that's why first element in array is null:
 		const dataToPopulateOptionsList = [
 			null,
@@ -101,8 +101,8 @@ export const execEvents = () => {
 				document.getElementsByTagName('select')[0]
 			);
 
-			await ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
-			await ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
+			ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
+			ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
 		}
 
 		//hiding button if returned to initial select and there is no way to return:
@@ -149,11 +149,16 @@ export const execEvents = () => {
 	document.getElementById('btn-disclaimer').addEventListener('click', (e) => {
 		e.target.parentElement.style.transform = 'translateX(0%)';
 		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
+		e.target.parentElement.style.visibility = 'visible';
 	});
 
 	////hide disclaimer
 	document.getElementById('icn-close').addEventListener('click', (e) => {
 		e.target.parentElement.style.transform = 'translateX(100%)';
 		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
+
+		setTimeout(() => {
+			e.target.parentElement.style.visibility = 'hidden';
+		}, 700);
 	});
 };

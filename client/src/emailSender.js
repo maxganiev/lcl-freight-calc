@@ -32,6 +32,7 @@ export const emailSender = {
 	sendEmail: async function () {
 		const eAddress = document.getElementById('input-email').value;
 		const inquiry = document.getElementById('input-inquiry').value;
+		const regex = /^(?!\s*$).+/;
 
 		const eHeaders = [
 			'<b> Расчет сделан: </b>',
@@ -63,7 +64,7 @@ export const emailSender = {
 				delMode === 'railMode' ? 'объемом ' + workingWeight + ' куб.м.' : 'рабочим весом ' + workingWeight + ' кг'
 			} </b> </pre>`;
 
-		if (eAddress === '') {
+		if (!eAddress.match(regex)) {
 			setAlert('err-fillDetails', 'Введите электронный адрес!');
 		} else
 			try {

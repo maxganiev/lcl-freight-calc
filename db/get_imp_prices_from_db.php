@@ -20,7 +20,13 @@ function referDb($dbName)
   $res = mysqli_query($connection, $query);
   $data = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
-  echo json_encode($data);
+  if ($res) {
+    echo json_encode($data);
+  } else {
+    header("HTTP/1.1 400 Bad request");
+    exit(json_encode('Ошибка базы данных. Попробуйте повторить позднее.'));
+  }
+
 
   //free res:
   mysqli_free_result($res);

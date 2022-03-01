@@ -6,11 +6,19 @@ if (isset($_POST['delMode'])) {
 
   switch (DEPCOUNTRY) {
     case 'CN, South_Center':
+      referDb('exp_rail_cn_center_south');
+      break;
+
+    case 'CN, North':
       referDb('exp_rail_cn_north');
       break;
 
     case 'Kor':
       referDb('exp_air_kor');
+      break;
+
+    case 'CN':
+      referDb('exp_air_cn');
       break;
   }
 } else {
@@ -29,7 +37,12 @@ function referDb($dbName)
   $res = mysqli_query($connection, $query);
   $data = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
-  echo json_encode($data);
+  if ($res) {
+    echo json_encode($data);
+  } else {
+    header("HTTP/1.1 400 Bad request");
+    exit(json_encode('Ошибка базы данных. Попробуйте повторить позднее.'));
+  }
 
   //free res:
   mysqli_free_result($res);

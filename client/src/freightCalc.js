@@ -1,4 +1,6 @@
 import { data_Selector } from './dataSelector';
+import { setAlert } from './alert';
+import { spinner } from './spinner';
 
 export const freightCalc = {
 	localChargesImp: 0,
@@ -14,6 +16,7 @@ export const freightCalc = {
 			const formData = new FormData();
 			data.forEach((d) => formData.append(Object.keys(d)[0], Object.values(d)[0]));
 
+			spinner.addSpinner();
 			const req = await fetch('../db/get_exp_prices_from_db.php', {
 				method: 'POST',
 				Accept: 'application/json',
@@ -21,8 +24,9 @@ export const freightCalc = {
 			});
 
 			if (req.status === 200) {
-				const res = await req.json();
+				spinner.removeSpinner();
 
+				const res = await req.json();
 				const prices_per_working_weight =
 					delMode === 'railMode'
 						? res.filter((data) => Number(data.CBM) >= workingWeight)[0]
@@ -70,6 +74,9 @@ export const freightCalc = {
 						this.exportCharges = Number(FREIGHT_USD_PER_CBM);
 						break;
 				}
+			} else {
+				spinner.removeSpinner();
+				setAlert('err-fillDetails', 'Проблемы с сервером. Повторите попытку позднее.');
 			}
 		} catch (error) {
 			console.log(error);
@@ -83,6 +90,7 @@ export const freightCalc = {
 			const formData = new FormData();
 			formData.append('delMode', delMode);
 
+			spinner.addSpinner();
 			const req = await fetch('../db/get_imp_prices_from_db.php', {
 				method: 'POST',
 				Accept: 'application/json',
@@ -90,6 +98,8 @@ export const freightCalc = {
 			});
 
 			if (req.status === 200) {
+				spinner.removeSpinner();
+
 				const res = await req.json();
 				const portName = toLatinChars(portOfLading);
 
@@ -113,6 +123,9 @@ export const freightCalc = {
 						Number(LOADING_RATE_PER_KG) * workingWeight +
 						Number(TODOOR_DELIVERY);
 				}
+			} else {
+				spinner.removeSpinner();
+				setAlert('err-fillDetails', 'Проблемы с сервером. Повторите попытку позднее.');
 			}
 		} catch (error) {
 			console.log(error);

@@ -1,5 +1,6 @@
 import { setAlert } from '../alert';
 import { spinner } from '../spinner';
+import { execEvents } from './execEvents';
 
 (async function () {
 	if (localStorage.getItem('lcl_ls')) {
@@ -15,7 +16,9 @@ import { spinner } from '../spinner';
 			});
 
 			if (req.status === 200) {
+				execEvents();
 				spinner.removeSpinner();
+
 				const form = document.getElementById('fileuploader-form');
 				const fileupload = document.getElementById('fileupload');
 
@@ -59,6 +62,8 @@ import { spinner } from '../spinner';
 							fileupload.files[0].name.slice(0, fileupload.files[0].name.indexOf('.'))
 						);
 
+						formData.append('token', JSON.parse(localStorage.getItem('lcl_ls')).token);
+
 						try {
 							spinner.addSpinner();
 							const req = await fetch('../db/uploadfile.php', {
@@ -66,29 +71,26 @@ import { spinner } from '../spinner';
 								body: formData,
 							});
 
-							if (req.status === 200) {
-								spinner.removeSpinner();
-								const res = await req.json();
-								setAlert('success', res);
-								fileupload.value = '';
-							}
+							spinner.removeSpinner();
+							const res = await req.json();
+							setAlert('success', res);
+							fileupload.value = '';
 						} catch (error) {
 							console.log(error);
+							spinner.removeSpinner();
 						}
+					} else {
+						setAlert('err-fillDetails', 'Вложите файл!');
 					}
 				});
 			} else {
 				window.location.replace('auth.html');
 				localStorage.removeItem('lcl_ls');
 			}
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 
 		//half a day in ms:
 		const elapsed = 43200000;
-		//const elapsed = 120000;
-
 		if (Date.now() - JSON.parse(localStorage.getItem('lcl_ls')).loggedin > elapsed) {
 			localStorage.removeItem('lcl_ls');
 			window.location.replace('auth.html');

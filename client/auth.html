@@ -17,13 +17,19 @@
 		<title>LCL калькулятор | Авторизация</title>
 	</head>
 	<body class="body-auth">
+		<a class="linkTo" href="index.html">
+			<img src="assets/calculator-solid.svg" alt="back to calc" title="Назад к калькулятору" />
+		</a>
 		<main>
 			<form class="auth-form" id="auth-form">
 				<label for="auth-email"> Введите электронный адрес </label>
 				<input type="email" id="auth-email" name="auth-email" />
-
+				<br />
 				<label for="auth-pass"> Введите пароль </label>
-				<input type="text" id="auth-pass" name="auth-pass" />
+				<input type="password" id="auth-pass" name="auth-pass" />
+				<br />
+				<label for="toggler-pass" class="toggler-pass-gr"> Показать пароль </label>
+				<input type="checkbox" id="toggler-pass" class="toggler-pass-gr" />
 
 				<input type="submit" class="btn" id="auth-submit" data-bs-toggle="button" aria-pressed="true" value="Войти" />
 			</form>
