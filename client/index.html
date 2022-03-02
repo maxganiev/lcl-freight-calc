@@ -17,7 +17,7 @@
 		<script defer src="app.bundle.js"></script>
 		<title>LCL калькулятор</title>
 	</head>
-	<body class="body-index">
+	<body class="body-index" id="body-index">
 		<svg xmlns="http://www.w3.org/2000/svg" style="display: none">
 			<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
 				<path
@@ -39,6 +39,8 @@
 			<img src="assets/upload-solid.svg" alt="upload file" title="Обновить прайс-листы в базе данных" />
 		</a>
 
+		<img src="./assets/box-archive-solid.svg" alt="box" class="icn-units" id="icn-units" />
+
 		<div id="disclaimer" class="disclaimer">
 			<button id="btn-disclaimer" class="btn btn-sm btn-disclaimer" data-bs-toggle="button" aria-pressed="true">
 				Дисклеймер
@@ -58,7 +60,7 @@
 				осуществляющими экспедирование грузов), и являются актуальными на 2020 г. На момент расчета цены могут отличаться.
 			</p>
 		</div>
-		<main class="main-index">
+		<main class="main-index" id="main-index">
 			<div id="calculator-navPanel" class="calculator-navPanel input-group-sm">
 				<button
 					class="btn-returnToPrevState btn btn-sm"
@@ -74,7 +76,16 @@
 					<option value="Авиа">Авиа</option>
 				</select>
 				<input type="text" id="input-weight" class="input-param form-control" placeholder="Введите вес в кг" />
-				<input type="text" id="input-volume" class="input-param form-control" placeholder="Введите объем в м. куб." />
+				<div class="input-cbm-calc-group">
+					<input type="text" id="input-length" class="input-param form-control" placeholder="Д(м)" />
+					<input type="text" id="input-width" class="input-param form-control" placeholder="Ш(м)" />
+					<input type="text" id="input-height" class="input-param form-control" placeholder="В(м)" />
+
+					<h6>Добавить место</h6>
+					<img src="./assets/square-plus-solid.svg" alt="add another unit" id="icn-add-unit" class="icn-add-unit" />
+					<p id="input-volume-output" class="input-volume-output"></p>
+				</div>
+				<!-- <input type="text" id="input-volume" class="input-param form-control" placeholder="Введите объем в м. куб." /> -->
 				<input type="text" id="input-tax" class="input-param form-control" placeholder="Укажите размер пошлины" />
 				<input
 					type="text"

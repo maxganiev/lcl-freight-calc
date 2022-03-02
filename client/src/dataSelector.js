@@ -1,6 +1,7 @@
 import { ui_Setter } from './uiSetter';
 import { setAlert } from './alert';
 import { spinner } from './spinner';
+import { unitForm } from './unitForm';
 
 //object to control data flow:
 export const data_Selector = {
@@ -25,7 +26,14 @@ export const data_Selector = {
 	//DOM elements:
 	selector_main: document.getElementById('selector-delMode'),
 	input_weight: document.getElementById('input-weight'),
-	input_volume: document.getElementById('input-volume'),
+
+	//CBM calc group:
+	input_length: document.getElementById('input-length'),
+	input_width: document.getElementById('input-width'),
+	input_height: document.getElementById('input-height'),
+	input_volume: null,
+	input_volume_output: document.getElementById('input-volume-output'),
+
 	input_tax: document.getElementById('input-tax'),
 	//this input is needed if there is problem with currency data server response:
 	input_currency: document.getElementById('input-currency'),
@@ -114,14 +122,25 @@ export const data_Selector = {
 		ui_Setter.displayDataOnSelection(this.selectionData, e.target);
 	},
 
-	setWorkingWeight: function (e) {
-		switch (this.delMode) {
+	setVolume: function (length, width, height, units) {
+		if (units.length === 0) {
+			this.input_volume = length * width * height;
+			this.input_volume_output.textContent = this.input_volume !== 0 ? `Текущий объем: ${this.input_volume} м. куб.` : '';
+		} else {
+			this.input_volume = unitForm.units.reduce((acc, curr) => acc + curr['Объем (м. куб.)'], 0);
+			this.input_volume_output.textContent = `Общий объем: ${this.input_volume.toFixed(2)} м. куб.`;
+		}
+	},
+
+	setWorkingWeight: function (delMode, length, width, height, units) {
+		this.setVolume(length, width, height, units);
+		switch (delMode) {
 			case 'railMode':
-				this.workingWeight = Math.max(this.input_weight.value / 500, this.input_volume.value);
+				this.workingWeight = Math.max(this.input_weight.value / 500, this.input_volume);
 				break;
 
 			case 'airMode':
-				this.workingWeight = Math.max(this.input_weight.value, this.input_volume.value * 167);
+				this.workingWeight = Math.max(this.input_weight.value, this.input_volume * 167);
 				break;
 		}
 	},

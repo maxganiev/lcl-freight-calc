@@ -4,6 +4,7 @@ import { freightCalc } from './freightCalc';
 import { emailSender } from './emailSender';
 import { setAlert } from './alert';
 import { checkSession } from './session';
+import { unitForm } from './unitForm';
 
 document.addEventListener('DOMContentLoaded', () => {
 	checkSession();
@@ -14,27 +15,38 @@ export const execEvents = () => {
 	Array.from(document.querySelectorAll('.input-param')).forEach(
 		(elem) =>
 			(elem.onkeyup = (e) => {
-				//validation to exclude text from input:
-				if (e.code !== 'Backspace' && e.target.value.match(data_Selector.regex) === null) {
-					setAlert('err-fillDetails', 'Введите число!');
-					e.target.value = '';
-				}
-				//max CBM validation for volume input:
-				else if (e.target.id === 'input-volume' && e.target.value > 23) {
-					setAlert('err-fillDetails', 'Макс. объем к расчету - 23 куб. м!');
-					e.target.value = '';
-				}
-				//max kgs validation for weight input:
-				else if (e.target.id === 'input-weight' && e.target.value > 11500) {
-					setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
-					e.target.value = '';
-				}
+				if (data_Selector.delMode === null && e.code !== 'Backspace') {
+					setAlert('err-fillDetails', 'Сначала укажите способ доставки!');
+					elem.value = '';
+				} else {
+					//validation to exclude text from input:
+					if (e.code !== 'Backspace' && e.target.value.match(data_Selector.regex) === null) {
+						setAlert('err-fillDetails', 'Введите число!');
+						e.target.value = '';
+					}
+					//max CBM validation for volume input:
+					else if (e.target.id === 'input-volume' && e.target.value > 23) {
+						setAlert('err-fillDetails', 'Макс. объем к расчету - 23 куб. м!');
+						e.target.value = '';
+					}
+					//max kgs validation for weight input:
+					else if (e.target.id === 'input-weight' && e.target.value > 11500) {
+						setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
+						e.target.value = '';
+					}
 
-				data_Selector.setWorkingWeight(e.target.value);
-				data_Selector.setTax(e.target.value);
+					data_Selector.setWorkingWeight(
+						data_Selector.delMode,
+						Number(data_Selector.input_length.value),
+						Number(data_Selector.input_width.value),
+						Number(data_Selector.input_height.value),
+						unitForm.units
+					);
+					data_Selector.setTax(e.target.value);
 
-				if (e.target.id === 'input-currency') {
-					data_Selector.setCurrencyManually(e.target.value);
+					if (e.target.id === 'input-currency') {
+						data_Selector.setCurrencyManually(e.target.value);
+					}
 				}
 			})
 	);
@@ -108,6 +120,7 @@ export const execEvents = () => {
 		//hiding button if returned to initial select and there is no way to return:
 		if (data_Selector.selectionData.length === 0) {
 			e.target.style.visibility = 'hidden';
+			data_Selector.delMode = null;
 		}
 	};
 
@@ -116,7 +129,7 @@ export const execEvents = () => {
 		switch (e.target.id) {
 			case 'selector-delMode':
 				data_Selector.setDelMode_and_DepCountriesList(e);
-				data_Selector.setWorkingWeight(e);
+
 				//showing return buttom when first select option was switched:
 				document.getElementById('btn-returnToPrevState').style.visibility = 'visible';
 				break;
@@ -145,6 +158,21 @@ export const execEvents = () => {
 		}
 	});
 
+	document.body.addEventListener('click', (e) => {
+		//hide unit form:
+		if (e.target.id.includes('icn-hide-unit-form')) {
+			unitForm.hideUnitForm();
+		}
+		//remove unit:
+		else if (e.target.id.includes('icn-delete-unit')) {
+			const text = e.target.parentElement.childNodes[0].textContent;
+			unitForm.removeUnits(text);
+		}
+		//edit unit:
+		else if (e.target.id.includes('icn-edit-unit')) {
+		}
+	});
+
 	////show disclaimer
 	document.getElementById('btn-disclaimer').addEventListener('click', (e) => {
 		e.target.parentElement.style.transform = 'translateX(0%)';
@@ -160,5 +188,28 @@ export const execEvents = () => {
 		setTimeout(() => {
 			e.target.parentElement.style.visibility = 'hidden';
 		}, 700);
+	});
+
+	////add cargo units:
+	document.getElementById('icn-add-unit').addEventListener('click', () => {
+		const inputs = [data_Selector.input_length.value, data_Selector.input_width.value, data_Selector.input_height.value];
+		inputs.every((input) => input.length > 0) && unitForm.addUnits(...inputs);
+
+		if (unitForm.units.length > 0) {
+			data_Selector.setVolume(
+				Number(data_Selector.delMode),
+				Number(data_Selector.input_length.value),
+				Number(data_Selector.input_width.value),
+				Number(data_Selector.input_height.value),
+				unitForm.units
+			);
+
+			data_Selector.input_length.value = data_Selector.input_width.value = data_Selector.input_height.value = '';
+		}
+	});
+
+	////show cargo unit form:
+	document.getElementById('icn-units').addEventListener('click', () => {
+		unitForm.showUnitForm();
 	});
 };

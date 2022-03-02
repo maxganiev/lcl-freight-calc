@@ -33,6 +33,7 @@ $bg-clr-black: rgba(0, 0, 0, 0.75);
 	animation-fill-mode: forwards;
 	animation-direction: normal;
 	animation-timing-function: ease-in;
+	z-index: 20;
 }
 
 .spinner {
@@ -131,6 +132,68 @@ li {
 	background-repeat: no-repeat;
 	overflow-x: hidden;
 
+	.icn-units {
+		position: absolute;
+		top: 1%;
+		left: 50%;
+		width: 30px;
+		object-fit: contain;
+		z-index: 10;
+		visibility: hidden;
+
+		&:hover {
+			cursor: pointer;
+			transform: scale(1.1);
+			transition: all 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		}
+	}
+
+	.list-unitForm {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding-top: 1.5%;
+		background: rgba(0, 0, 0, 0.83);
+		color: #fff;
+		z-index: 15;
+		font-size: calc(0.5em + 1vmin);
+
+		li:first-child {
+			position: absolute;
+			width: 30px;
+			right: 5%;
+
+			img {
+				width: 100%;
+
+				&:hover {
+					cursor: pointer;
+					transform: scale(1.1);
+					transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+				}
+			}
+		}
+
+		.listitem-toolkit {
+			display: flex;
+			width: 100%;
+
+			img {
+				width: 15px;
+				object-fit: contain;
+				margin-left: 1.4%;
+
+				&:hover {
+					cursor: pointer;
+					transform: scale(1.1);
+					transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+				}
+			}
+		}
+	}
+
 	//temp
 	// &::before {
 	// 	content: 'Сайт в процессе доработки. Перезайдите позднее.';
@@ -180,6 +243,61 @@ li {
 				align-items: center;
 				padding: 2%;
 				background-color: $bg-clr-white;
+
+				.input-cbm-calc-group {
+					display: flex;
+					position: relative;
+					height: 15%;
+					width: 100%;
+					flex-wrap: wrap;
+					justify-content: center;
+					align-items: center;
+
+					input[type='text']::-webkit-input-placeholder {
+						/* Chrome/Opera/Safari */
+						font-size: 0.6rem !important;
+					}
+					input[type='text']::-moz-placeholder {
+						/* Firefox 19+ */
+						font-size: 0.6rem !important;
+					}
+					input[type='text']:-ms-input-placeholder {
+						/* IE 10+ */
+						font-size: 0.6rem !important;
+					}
+					input[type='text']:-moz-placeholder {
+						/* Firefox 18- */
+						font-size: 0.6rem !important;
+					}
+
+					input[type='text'] {
+						width: 28%;
+					}
+
+					h6 {
+						font-size: $fs-sm;
+					}
+
+					.icn-add-unit {
+						width: 30px;
+						object-fit: contain;
+						margin-left: 3%;
+
+						&:hover {
+							cursor: pointer;
+							transform: scale(1.1);
+							transition: transform 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+						}
+					}
+
+					.input-volume-output {
+						position: absolute;
+						top: 100%;
+						text-align: center;
+						margin: 0 auto;
+						left: 10%;
+					}
+				}
 
 				%btn-options-shared {
 					width: 100%;
