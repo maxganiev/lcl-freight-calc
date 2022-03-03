@@ -158,9 +158,9 @@ li {
 		background: rgba(0, 0, 0, 0.83);
 		color: #fff;
 		z-index: 15;
-		font-size: calc(0.5em + 1vmin);
+		font-size: calc(0.4em + 1vmin);
 
-		li:first-child {
+		.listItem-icn-hide-unit-form {
 			position: absolute;
 			width: 30px;
 			right: 5%;
@@ -176,19 +176,106 @@ li {
 			}
 		}
 
-		.listitem-toolkit {
+		.listItem-outer {
 			display: flex;
+			width: 90%;
+			justify-content: space-evenly;
+			margin-top: 1.5%;
+
+			.listitem-toolkit {
+				display: flex;
+				align-items: center;
+				flex: 0.2;
+				justify-content: center;
+
+				img {
+					width: 15px;
+					object-fit: contain;
+					margin-right: 7%;
+
+					&:hover {
+						cursor: pointer;
+						transform: scale(1.1);
+						transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+					}
+				}
+			}
+
+			li:nth-child(n + 2) {
+				flex: 0.1;
+				align-self: center;
+				justify-self: center;
+			}
+		}
+
+		.list-mask {
+			z-index: 20;
+			position: absolute;
 			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-color: rgba(0, 0, 0, 0.7);
 
-			img {
-				width: 15px;
-				object-fit: contain;
-				margin-left: 1.4%;
+			.unitForm-update {
+				position: absolute;
+				background-color: $bg-clr-white;
+				opacity: 0.9;
+				width: 50%;
+				height: 50%;
+				transform: translateX(50%) translateY(50%);
+				color: $bg-clr-black;
 
-				&:hover {
-					cursor: pointer;
-					transform: scale(1.1);
-					transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+				.list-unitForm-update {
+					width: 100%;
+					height: 100%;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-evenly;
+					align-items: center;
+					padding: 0 !important;
+
+					li:first-child {
+						width: 20px;
+						position: absolute;
+						right: 0;
+						top: 0;
+
+						&:hover {
+							cursor: pointer;
+						}
+
+						img {
+							width: 100%;
+							object-fit: contain;
+						}
+					}
+
+					li:nth-child(n + 3) {
+						input {
+							background-color: $bg-clr-black;
+							border: none;
+							color: $fs-clr-white;
+							padding-left: 10px;
+						}
+
+						input[type='text']::-webkit-input-placeholder {
+							/* Chrome/Opera/Safari */
+							color: $fs-clr-white;
+						}
+						input[type='text']::-moz-placeholder {
+							/* Firefox 19+ */
+							color: $fs-clr-white;
+						}
+						input[type='text']:-ms-input-placeholder {
+							/* IE 10+ */
+							color: $fs-clr-white;
+						}
+						input[type='text']:-moz-placeholder {
+							/* Firefox 18- */
+							color: $fs-clr-white;
+						}
+					}
 				}
 			}
 		}
@@ -290,7 +377,7 @@ li {
 						}
 					}
 
-					.input-volume-output {
+					.output {
 						position: absolute;
 						top: 100%;
 						text-align: center;

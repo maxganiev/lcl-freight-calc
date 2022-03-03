@@ -21,7 +21,7 @@ function getCurrencyAPI()
   $res = file_get_contents("https://free.currconv.com/api/v7/convert?q=USD_RUB,EUR_RUB&compact=ultra&date=$today&apiKey=" . CURRCONV_KEY);
 
   if ($http_response_header[0] !== 'HTTP/1.1 200 OK') {
-    header("HTTP/1.1 404 Not Found");
+    header("HTTP/1.1 500 currconv API is not responding atm");
     exit(returnJson("Error: Some problems have occured while fetching the data..."));
   } else {
     returnJson($res);

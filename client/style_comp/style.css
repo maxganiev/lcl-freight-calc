@@ -118,28 +118,90 @@ li {
     background: rgba(0, 0, 0, 0.83);
     color: #fff;
     z-index: 15;
-    font-size: calc(0.5em + 1vmin); }
-    .body-index .list-unitForm li:first-child {
+    font-size: calc(0.4em + 1vmin); }
+    .body-index .list-unitForm .listItem-icn-hide-unit-form {
       position: absolute;
       width: 30px;
       right: 5%; }
-      .body-index .list-unitForm li:first-child img {
+      .body-index .list-unitForm .listItem-icn-hide-unit-form img {
         width: 100%; }
-        .body-index .list-unitForm li:first-child img:hover {
+        .body-index .list-unitForm .listItem-icn-hide-unit-form img:hover {
           cursor: pointer;
           transform: scale(1.1);
           transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
-    .body-index .list-unitForm .listitem-toolkit {
+    .body-index .list-unitForm .listItem-outer {
       display: flex;
-      width: 100%; }
-      .body-index .list-unitForm .listitem-toolkit img {
-        width: 15px;
-        object-fit: contain;
-        margin-left: 1.4%; }
-        .body-index .list-unitForm .listitem-toolkit img:hover {
-          cursor: pointer;
-          transform: scale(1.1);
-          transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+      width: 90%;
+      justify-content: space-evenly;
+      margin-top: 1.5%; }
+      .body-index .list-unitForm .listItem-outer .listitem-toolkit {
+        display: flex;
+        align-items: center;
+        flex: 0.2;
+        justify-content: center; }
+        .body-index .list-unitForm .listItem-outer .listitem-toolkit img {
+          width: 15px;
+          object-fit: contain;
+          margin-right: 7%; }
+          .body-index .list-unitForm .listItem-outer .listitem-toolkit img:hover {
+            cursor: pointer;
+            transform: scale(1.1);
+            transition: transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+      .body-index .list-unitForm .listItem-outer li:nth-child(n + 2) {
+        flex: 0.1;
+        align-self: center;
+        justify-self: center; }
+    .body-index .list-unitForm .list-mask {
+      z-index: 20;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.7); }
+      .body-index .list-unitForm .list-mask .unitForm-update {
+        position: absolute;
+        background-color: rgba(250, 250, 250, 0.85);
+        opacity: 0.9;
+        width: 50%;
+        height: 50%;
+        transform: translateX(50%) translateY(50%);
+        color: rgba(0, 0, 0, 0.75); }
+        .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+          padding: 0 !important; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:first-child {
+            width: 20px;
+            position: absolute;
+            right: 0;
+            top: 0; }
+            .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:first-child:hover {
+              cursor: pointer; }
+            .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:first-child img {
+              width: 100%;
+              object-fit: contain; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:nth-child(n + 3) input {
+            background-color: rgba(0, 0, 0, 0.75);
+            border: none;
+            color: #fff;
+            padding-left: 10px; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:nth-child(n + 3) input[type='text']::-webkit-input-placeholder {
+            /* Chrome/Opera/Safari */
+            color: #fff; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:nth-child(n + 3) input[type='text']::-moz-placeholder {
+            /* Firefox 19+ */
+            color: #fff; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:nth-child(n + 3) input[type='text']:-ms-input-placeholder {
+            /* IE 10+ */
+            color: #fff; }
+          .body-index .list-unitForm .list-mask .unitForm-update .list-unitForm-update li:nth-child(n + 3) input[type='text']:-moz-placeholder {
+            /* Firefox 18- */
+            color: #fff; }
   .body-index .main-index {
     position: relative;
     width: 90%;
@@ -196,7 +258,7 @@ li {
             cursor: pointer;
             transform: scale(1.1);
             transition: transform 0.4s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
-        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .input-volume-output {
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .output {
           position: absolute;
           top: 100%;
           text-align: center;

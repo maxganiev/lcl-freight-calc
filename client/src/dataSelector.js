@@ -26,13 +26,14 @@ export const data_Selector = {
 	//DOM elements:
 	selector_main: document.getElementById('selector-delMode'),
 	input_weight: document.getElementById('input-weight'),
+	weight: 0,
 
 	//CBM calc group:
 	input_length: document.getElementById('input-length'),
 	input_width: document.getElementById('input-width'),
 	input_height: document.getElementById('input-height'),
-	input_volume: null,
-	input_volume_output: document.getElementById('input-volume-output'),
+	volume: 0,
+	output: document.getElementById('output'),
 
 	input_tax: document.getElementById('input-tax'),
 	//this input is needed if there is problem with currency data server response:
@@ -122,30 +123,53 @@ export const data_Selector = {
 		ui_Setter.displayDataOnSelection(this.selectionData, e.target);
 	},
 
-	setVolume: function (length, width, height, units) {
+	setWeight: function (weight, units) {
 		if (units.length === 0) {
-			this.input_volume = length * width * height;
-			this.input_volume_output.textContent = this.input_volume !== 0 ? `Текущий объем: ${this.input_volume} м. куб.` : '';
+			this.weight = weight;
 		} else {
-			this.input_volume = unitForm.units.reduce((acc, curr) => acc + curr['Объем (м. куб.)'], 0);
-			this.input_volume_output.textContent = `Общий объем: ${this.input_volume.toFixed(2)} м. куб.`;
+			this.weight = unitForm.units.reduce((acc, curr) => acc + curr['Вес (кг)'], 0);
 		}
 	},
 
-	setWorkingWeight: function (delMode, length, width, height, units) {
+	setVolume: function (length, width, height, units) {
+		if (units.length === 0) {
+			this.volume = length * width * height;
+		} else {
+			this.volume = unitForm.units.reduce((acc, curr) => acc + curr['Объем (м. куб.)'], 0);
+		}
+	},
+
+	printData: function () {
+		if (unitForm.units.length === 0) {
+			this.output.innerHTML =
+				this.volume !== 0 && this.weight !== 0
+					? `Текущий объем: ${this.volume.toFixed(2)} м. куб. <br /> Вес: ${this.weight} кг`
+					: '';
+		} else {
+			this.output.innerHTML =
+				this.volume !== 0 && this.weight !== 0
+					? `Общий объем: ${this.volume.toFixed(2)} м. куб. <br /> Вес итого: ${this.weight} кг`
+					: '';
+		}
+	},
+
+	setWorkingWeight: function (delMode, length, width, height, weight, units) {
 		this.setVolume(length, width, height, units);
+		this.setWeight(weight, units);
+		this.printData();
+
 		switch (delMode) {
 			case 'railMode':
-				this.workingWeight = Math.max(this.input_weight.value / 500, this.input_volume);
+				this.workingWeight = Math.max(this.weight / 500, this.volume);
 				break;
 
 			case 'airMode':
-				this.workingWeight = Math.max(this.input_weight.value, this.input_volume * 167);
+				this.workingWeight = Math.max(this.weight, this.volume * 167);
 				break;
 		}
 	},
 
-	setTax: function (e) {
+	setTax: function () {
 		this.tax = Number(this.input_tax.value) / 100;
 	},
 
@@ -201,7 +225,7 @@ export const data_Selector = {
 	},
 
 	//calling this method if there were problems with currency fetching from server:
-	setCurrencyManually: function (e) {
+	setCurrencyManually: function () {
 		this.currency = Number(this.input_currency.value);
 	},
 };

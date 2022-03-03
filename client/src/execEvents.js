@@ -5,6 +5,7 @@ import { emailSender } from './emailSender';
 import { setAlert } from './alert';
 import { checkSession } from './session';
 import { unitForm } from './unitForm';
+import { globeContext } from './globeContext';
 
 document.addEventListener('DOMContentLoaded', () => {
 	checkSession();
@@ -12,58 +13,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export const execEvents = () => {
 	////setting working weight and tax to calculate:
-	Array.from(document.querySelectorAll('.input-param')).forEach(
-		(elem) =>
-			(elem.onkeyup = (e) => {
-				if (data_Selector.delMode === null && e.code !== 'Backspace') {
-					setAlert('err-fillDetails', 'Сначала укажите способ доставки!');
-					elem.value = '';
-				} else {
-					//validation to exclude text from input:
-					if (e.code !== 'Backspace' && e.target.value.match(data_Selector.regex) === null) {
-						setAlert('err-fillDetails', 'Введите число!');
-						e.target.value = '';
-					}
-					//max CBM validation for volume input:
-					else if (e.target.id === 'input-volume' && e.target.value > 23) {
-						setAlert('err-fillDetails', 'Макс. объем к расчету - 23 куб. м!');
-						e.target.value = '';
-					}
-					//max kgs validation for weight input:
-					else if (e.target.id === 'input-weight' && e.target.value > 11500) {
-						setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
-						e.target.value = '';
-					}
-
-					data_Selector.setWorkingWeight(
-						data_Selector.delMode,
-						Number(data_Selector.input_length.value),
-						Number(data_Selector.input_width.value),
-						Number(data_Selector.input_height.value),
-						unitForm.units
-					);
-					data_Selector.setTax(e.target.value);
-
-					if (e.target.id === 'input-currency') {
-						data_Selector.setCurrencyManually(e.target.value);
-					}
+	document.body.addEventListener('keyup', (e) => {
+		if (e.target.className.includes('input-param')) {
+			if (data_Selector.delMode === null && e.code !== 'Backspace') {
+				setAlert('err-fillDetails', 'Сначала укажите способ доставки!');
+				e.target.value = '';
+			} else {
+				//validation to exclude text from input:
+				if (e.code !== 'Backspace' && e.target.value.match(data_Selector.regex) === null) {
+					setAlert('err-fillDetails', 'Введите число!');
+					e.target.value = '';
 				}
-			})
-	);
+				//max CBM validation for volume input:
+				else if (e.target.id === 'input-volume' && e.target.value > 23) {
+					setAlert('err-fillDetails', 'Макс. объем к расчету - 23 куб. м!');
+					e.target.value = '';
+				}
+				//max kgs validation for weight input:
+				else if (e.target.id === 'input-weight' && e.target.value > 11500) {
+					setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
+					e.target.value = '';
+				}
+				if (e.target.id === 'input-currency') {
+					data_Selector.setCurrencyManually(e.target.value);
+				}
+
+				data_Selector.setWorkingWeight(
+					data_Selector.delMode,
+					Number(data_Selector.input_length.value),
+					Number(data_Selector.input_width.value),
+					Number(data_Selector.input_height.value),
+					Number(data_Selector.input_weight.value),
+					unitForm.units
+				);
+
+				data_Selector.setTax();
+			}
+		}
+	});
 
 	////calculate and get results:
 	document.getElementById('btn-getResults').onclick = async () => {
 		const { delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax } = data_Selector;
-		if (
-			Array.from(document.querySelectorAll('.input-param')).some(
-				(elem) => (elem.value === '' || Number(elem.value) === 0) && elem.id !== 'input-tax' && elem.id !== 'input-currency'
-			)
-		) {
+
+		if (data_Selector.weight === 0 || data_Selector.volume === 0) {
 			setAlert('err-fillDetails', 'Заполните все необходимые поля!');
 		} else {
 			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
 			ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
 			ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
+			Array.from(document.querySelectorAll('.input-param')).forEach((elem) => (elem.value = ''));
+			globeContext.resetDataToDefault();
 		}
 	};
 
@@ -165,11 +165,25 @@ export const execEvents = () => {
 		}
 		//remove unit:
 		else if (e.target.id.includes('icn-delete-unit')) {
-			const text = e.target.parentElement.childNodes[0].textContent;
-			unitForm.removeUnits(text);
+			const unitName = e.target.parentElement.childNodes[e.target.parentElement.childNodes.length - 1].textContent;
+			unitForm.removeUnits(unitName);
+		}
+		//show update unit form:
+		else if (e.target.id.includes('icn-edit-unit')) {
+			const unitName = e.target.parentElement.childNodes[e.target.parentElement.childNodes.length - 1].textContent;
+			unitForm.showUpdateUnitForm(unitName);
+		}
+		//hide unit update form:
+		else if (e.target.id.includes('icn-hide-update-unitform')) {
+			unitForm.hideUpdateUnitForm('list-mask');
 		}
 		//edit unit:
-		else if (e.target.id.includes('icn-edit-unit')) {
+		else if (e.target.id.includes('btn-submit-unitform-changes')) {
+			const values = Array.from(document.getElementById('list-unitForm-update').children)
+				.filter((child) => child.firstElementChild.tagName === 'INPUT')
+				.map((li) => li.firstElementChild.value);
+
+			unitForm.updateUnits(...values);
 		}
 	});
 
@@ -192,19 +206,32 @@ export const execEvents = () => {
 
 	////add cargo units:
 	document.getElementById('icn-add-unit').addEventListener('click', () => {
-		const inputs = [data_Selector.input_length.value, data_Selector.input_width.value, data_Selector.input_height.value];
-		inputs.every((input) => input.length > 0) && unitForm.addUnits(...inputs);
+		const inputs = [
+			Number(data_Selector.input_length.value),
+			Number(data_Selector.input_width.value),
+			Number(data_Selector.input_height.value),
+			Number(data_Selector.input_weight.value),
+		];
+		inputs.every((input) => input > 0) && unitForm.addUnits(...inputs);
 
 		if (unitForm.units.length > 0) {
 			data_Selector.setVolume(
-				Number(data_Selector.delMode),
+				data_Selector.delMode,
 				Number(data_Selector.input_length.value),
 				Number(data_Selector.input_width.value),
 				Number(data_Selector.input_height.value),
 				unitForm.units
 			);
 
-			data_Selector.input_length.value = data_Selector.input_width.value = data_Selector.input_height.value = '';
+			data_Selector.setWeight(Number(data_Selector.input_weight.value), unitForm.units);
+
+			data_Selector.printData();
+
+			data_Selector.input_length.value =
+				data_Selector.input_width.value =
+				data_Selector.input_height.value =
+				data_Selector.input_weight.value =
+					'';
 		}
 	});
 
