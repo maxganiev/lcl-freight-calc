@@ -1,3 +1,5 @@
+import { globeContext } from '../globeContext';
+
 export const execEvents = function () {
 	//remembering height of body:
 	const body_screen_param = {
@@ -124,9 +126,11 @@ export const execEvents = function () {
 		img.onload = () => {
 			let imgWidth = img.width;
 
-			window.onresize = () => {
+			function resizeImg() {
 				imgWidth = img.width;
-			};
+			}
+
+			globeContext.windowResize(resizeImg);
 
 			img.onmousemove = (e) => {
 				portion = (e.offsetX / imgWidth) * 100;

@@ -142,18 +142,26 @@ export const data_Selector = {
 	printData: function () {
 		if (unitForm.units.length === 0) {
 			this.output.innerHTML =
-				this.volume !== 0 && this.weight !== 0
+				this.volume !== 0 &&
+				this.weight !== 0 &&
+				!isNaN(this.volume) &&
+				this.weight !== undefined &&
+				typeof this.weight !== 'undefined'
 					? `Текущий объем: ${this.volume.toFixed(2)} м. куб. <br /> Вес: ${this.weight} кг`
 					: '';
 		} else {
 			this.output.innerHTML =
-				this.volume !== 0 && this.weight !== 0
+				this.volume !== 0 &&
+				this.weight !== 0 &&
+				!isNaN(this.volume) &&
+				this.weight !== undefined &&
+				typeof this.weight !== 'undefined'
 					? `Общий объем: ${this.volume.toFixed(2)} м. куб. <br /> Вес итого: ${this.weight} кг`
 					: '';
 		}
 	},
 
-	setWorkingWeight: function (delMode, length, width, height, weight, units) {
+	setWorkingWeight: function (delMode, units, length = 0, width = 0, height = 0, weight = 0) {
 		this.setVolume(length, width, height, units);
 		this.setWeight(weight, units);
 		this.printData();

@@ -37,6 +37,7 @@ export const emailSender = {
 		const eHeaders = [
 			'<b> Расчет сделан: </b>',
 			'<b> Курс валюты: </b>',
+			'<b> Пошлина (%): </b>',
 			'<b> Способ доставки: </b>',
 			'<b> Страна отправки: </b>',
 			'<b> Условия поставки: </b>',
@@ -61,7 +62,9 @@ export const emailSender = {
 		const eBody =
 			eBodyMapped.join(' ') +
 			` Расчет выполнен для груза <b> ${
-				delMode === 'railMode' ? 'объемом ' + workingWeight + ' куб.м.' : 'рабочим весом ' + workingWeight + ' кг'
+				delMode === 'railMode'
+					? 'объемом ' + workingWeight.toFixed(2) + ' куб.м.'
+					: 'рабочим весом ' + workingWeight.toFixed(2) + ' кг'
 			} </b> </pre>`;
 
 		if (!eAddress.match(regex)) {

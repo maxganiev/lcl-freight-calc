@@ -1,11 +1,17 @@
 import { data_Selector } from './dataSelector';
-
+import { setAlert } from './alert';
+import { ui_Setter } from './uiSetter';
 export const unitForm = {
-	parentElem: document.getElementById('body-index'),
+	body_HTML: document.getElementById('body-index'),
 	list_unitForm: document.getElementById('unitForm') === null ? document.createElement('ul') : document.getElementById('unitForm'),
 	unitIcon: document.getElementById('icn-units'),
 	unit: null,
 	units: [],
+	current: null,
+	entriesValid: {
+		entry_weight: true,
+		entry_vol: true,
+	},
 
 	addUnits: function (length, width, height, weight) {
 		this.unit = {
@@ -17,22 +23,26 @@ export const unitForm = {
 			'Вес (кг)': weight,
 		};
 
-		this.units.push(this.unit);
+		this.validateEntries(this.unit, 'addNew');
 
-		this.units.forEach((un, index) => {
-			un['Место'] = index + 1;
-		});
+		if (Object.values(this.entriesValid).some((value) => value === false)) {
+			setAlert('err-fillDetails', 'Макс. допустимый объем - 23 куб. м, вес - 11500 кг', 4000);
+		} else {
+			this.units.push(this.unit);
 
-		this.unitIcon.style.visibility = 'visible';
-		this.unitIcon.style.transform = 'scale(1.2)';
-		this.unitIcon.style.transition = 'transform 0.3s ease-in-out';
+			this.units.forEach((un, index) => {
+				un['Место'] = index + 1;
+			});
 
-		setTimeout(() => {
-			this.unitIcon.style.transform = 'scale(1)';
+			this.unitIcon.style.visibility = 'visible';
+			this.unitIcon.style.transform = 'scale(1.2)';
 			this.unitIcon.style.transition = 'transform 0.3s ease-in-out';
-		}, 500);
 
-		console.log(this.units);
+			setTimeout(() => {
+				this.unitIcon.style.transform = 'scale(1)';
+				this.unitIcon.style.transition = 'transform 0.3s ease-in-out';
+			}, 500);
+		}
 	},
 
 	removeUnits: function (unitName) {
@@ -43,39 +53,50 @@ export const unitForm = {
 			un['Место'] = index + 1;
 		});
 
-		data_Selector.setWorkingWeight(data_Selector.delMode, null, null, null, null, this.units);
+		data_Selector.setWorkingWeight(data_Selector.delMode, this.units);
 
 		console.log(data_Selector.workingWeight);
 
 		this.showUnitForm();
 
 		this.unitIcon.style.visibility = this.units.length > 0 ? 'visible' : 'hidden';
+
+		ui_Setter.switchButtonVisibility();
 	},
 
-	updateUnits: function (unitName, length, width, height, weight) {
+	updateUnits: function (length, width, height, weight) {
 		const updated = {
-			Место: Number(unitName.slice(unitName.indexOf(' ') + 1)),
-			'Длина (м)': length,
-			'Ширина (м)': width,
-			'Высота (м)': height,
+			Место: this.current['Место'],
+			'Длина (м)': Number(length),
+			'Ширина (м)': Number(width),
+			'Высота (м)': Number(height),
 			'Объем (м. куб.)': length * width * height,
-			'Вес (кг)': weight,
+			'Вес (кг)': Number(weight),
 		};
 
-		const index = this.units.findIndex((un) => `${Object.keys(un)[0]} ${un['Место']}` === unitName);
-		this.units.splice(index, 1, updated);
+		this.validateEntries(updated, 'updateExisting');
 
-		data_Selector.setWorkingWeight(data_Selector.delMode, null, null, null, null, this.units);
+		if (Object.values(this.entriesValid).some((value) => value === false)) {
+			setAlert('err-fillDetails', 'Макс. допустимый объем - 23 куб. м, вес - 11500 кг', 4000);
+		} else {
+			const index = this.units.findIndex(
+				(un) => `${Object.keys(un)[0]} ${un['Место']}` === `${Object.keys(this.current)[0]} ${this.current['Место']}`
+			);
 
-		console.log(data_Selector.workingWeight);
+			this.units.splice(index, 1, updated);
+			data_Selector.setWorkingWeight(data_Selector.delMode, this.units);
 
-		this.showUnitForm();
+			this.showUnitForm();
+		}
 	},
 
 	showUpdateUnitForm: function (unitName) {
 		Array.from(this.list_unitForm.children).forEach((child) => child.id === 'list-mask' && child.remove());
 
-		const current = this.units.find((un) => `${Object.keys(un)[0]} ${un['Место']}` === unitName);
+		this.current = this.units.find((un) => `${Object.keys(un)[0]} ${un['Место']}` === unitName);
+		const temp = Object.keys(this.current)
+			.filter((key) => key !== 'Объем (м. куб.)')
+			.reduce((acc, curr) => ({ ...acc, [curr]: this.current[curr] }), {});
 
 		const list_Mask = document.createElement('li');
 		list_Mask.id = list_Mask.className = 'list-mask';
@@ -86,13 +107,11 @@ export const unitForm = {
 		listItem.innerHTML = `
 		<ul id="list-unitForm-update" class="list list-unitForm-update">
 		<li> <img src="./assets/times-solid-black.svg" alt="close popup" id="icn-hide-update-unitform" class="icn-hide-update-unitform" /> </li>
-		${Object.keys(current)
+		${Object.keys(temp)
 			.map((key, index) =>
-				index > 0 && key !== 'Объем (м. куб.)'
+				index > 0
 					? `<li> <input type="text" placeholder="${key}" class="input-param" </li>`
-					: index === 0 && key !== 'Объем (м. куб.)'
-					? `<li> <strong> ${key} ${current[key]} </strong> </li>`
-					: null
+					: `<li> <strong> ${key} ${temp[key]} </strong> </li>`
 			)
 			.join('')}
 			<li> <button id="btn-submit-unitform-changes" class="btn btn-sm btn-Submit"> Сохранить изменения </button> </li>
@@ -135,7 +154,7 @@ export const unitForm = {
 
 			Object.keys(un).forEach((key) => {
 				const listItem = document.createElement('li');
-				listItem.innerHTML = key === 'Место' ? `${key} ${un[key]}` : `${key}: ${un[key]}`;
+				listItem.innerHTML = key === 'Место' ? `${key} ${un[key]}` : `${key}: ${un[key].toFixed(2)}`;
 
 				listItem_outer.appendChild(listItem);
 				key === 'Место' &&
@@ -150,7 +169,11 @@ export const unitForm = {
 			this.list_unitForm.appendChild(listItem_outer);
 		});
 
-		this.parentElem.insertAdjacentElement('afterbegin', this.list_unitForm);
+		this.body_HTML.insertAdjacentElement('afterbegin', this.list_unitForm);
+
+		setTimeout(() => {
+			this.calculateHeight(this.body_HTML.scrollHeight, this.list_unitForm.scrollHeight);
+		}, 500);
 
 		if (this.list_unitForm.style.transform !== 'translateY(0%)') {
 			this.list_unitForm.style.transform = 'translateY(-100%)';
@@ -163,7 +186,42 @@ export const unitForm = {
 	},
 
 	hideUnitForm: function () {
-		document.getElementById('unitForm').style.transform = 'translateY(-100%)';
+		this.body_HTML.style.height = '100vh';
+		document.getElementById('unitForm').style.transform = `translateY(-${this.list_unitForm.scrollHeight}px)`;
 		document.getElementById('unitForm').style.transition = 'all 0.6s ease-out';
+	},
+
+	validateEntries: function (entryObject, initiator) {
+		if (this.units.length === 0) {
+			this.entriesValid.entry_weight = Number(entryObject['Вес (кг)']) < 11500;
+			this.entriesValid.entry_vol = Number(entryObject['Объем (м. куб.)']) < 23;
+		} else {
+			this.entriesValid.entry_weight =
+				initiator === 'addNew'
+					? Number(entryObject['Вес (кг)']) + this.units.reduce((acc, curr) => acc + Number(curr['Вес (кг)']), 0) <=
+					  11500
+					: Number(entryObject['Вес (кг)']) +
+							this.units.reduce((acc, curr) => acc + Number(curr['Вес (кг)']), 0) -
+							Number(this.current['Вес (кг)']) <=
+					  11500;
+
+			this.entriesValid.entry_vol =
+				initiator === 'addNew'
+					? Number(entryObject['Объем (м. куб.)']) +
+							this.units.reduce((acc, curr) => acc + Number(curr['Объем (м. куб.)']), 0) <=
+					  23
+					: Number(entryObject['Объем (м. куб.)']) +
+							this.units.reduce((acc, curr) => acc + Number(curr['Объем (м. куб.)']), 0) -
+							Number(this.current['Объем (м. куб.)']) <=
+					  23;
+		}
+	},
+
+	calculateHeight: function (bodyHeight, listHeight) {
+		if (bodyHeight >= listHeight) {
+			this.body_HTML.style.height = '100vh';
+		} else {
+			this.body_HTML.style.height = bodyHeight + (listHeight - bodyHeight) + 'px';
+		}
 	},
 };

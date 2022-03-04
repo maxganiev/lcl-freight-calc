@@ -1,6 +1,7 @@
 import { data_Selector } from './dataSelector';
 import { setAlert } from './alert';
 import { spinner } from './spinner';
+import { globeContext } from './globeContext';
 
 export const freightCalc = {
 	localChargesImp: 0,
@@ -170,6 +171,7 @@ export const freightCalc = {
 			this.optionsCostList.push(
 				data_Selector.today,
 				data_Selector.currency,
+				data_Selector.tax * 100,
 				delMode === 'railMode' ? 'Ж/Д' : 'Авиа',
 				depCountry,
 				deliveryTerm,
@@ -187,6 +189,7 @@ export const freightCalc = {
 				}
 			}
 
+			globeContext.resetDataToDefault();
 			return this.totalTransportationCost;
 		}
 	},

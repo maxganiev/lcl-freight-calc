@@ -1,5 +1,6 @@
 import { emailSender } from './emailSender';
 import { freightCalc } from './freightCalc';
+import { data_Selector } from './dataSelector';
 
 //Object to setup UI:
 export const ui_Setter = {
@@ -59,7 +60,13 @@ export const ui_Setter = {
 			this.calculatorResults.lastElementChild.remove();
 		}
 
-		this.btnToGetResults.style.visibility = selectionDataArr.length < this.maxNumberOfSelectors ? 'hidden' : 'visible';
+		this.switchButtonVisibility();
+	},
+
+	////hide of show btn to get results:
+	switchButtonVisibility: function () {
+		this.btnToGetResults.style.visibility =
+			data_Selector.workingWeight === null || data_Selector.workingWeight <= 0 ? 'hidden' : 'visible';
 	},
 
 	////apend or remove emailBox against btnToGetResults click ev:
@@ -113,6 +120,7 @@ export const ui_Setter = {
 		const popupHeaders = [
 			'Расчет сделан',
 			'Курс валюты',
+			'Пошлина (%)',
 			'Способ доставки',
 			'Страна отправки',
 			'Условия поставки',
@@ -121,6 +129,8 @@ export const ui_Setter = {
 			'Итоговая стоимость локальных расходов в стране назначения (руб.)',
 			' Итоговая стоимость, включая НДС 20% (руб.)',
 		];
+
+		const { delMode, workingWeight } = data_Selector;
 
 		freightCalc.optionsCostList.forEach((option, index) => {
 			const listItem = document.createElement('li');
@@ -131,6 +141,14 @@ export const ui_Setter = {
 					? '<span class="span-listItem">' + new Intl.NumberFormat('ru-RU').format(option.toFixed(2)) + '</span>'
 					: '<span class="span-listItem">' + option + '</span>'
 			}`;
+
+			if (index === freightCalc.optionsCostList.length - 1) {
+				listItem.innerHTML += `<br /> <span class="span-listItem">Расчет выполнен для груза ${
+					delMode === 'railMode'
+						? 'объемом ' + workingWeight.toFixed(2) + ' куб.м.'
+						: 'рабочим весом ' + workingWeight.toFixed(2) + ' кг'
+				} </span>`;
+			}
 
 			setTimeout(() => {
 				parentElem.appendChild(listItem);

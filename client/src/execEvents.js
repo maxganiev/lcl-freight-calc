@@ -9,6 +9,7 @@ import { globeContext } from './globeContext';
 
 document.addEventListener('DOMContentLoaded', () => {
 	checkSession();
+	globeContext.windowResize(unitForm.calculateHeight.bind(unitForm));
 });
 
 export const execEvents = () => {
@@ -24,28 +25,32 @@ export const execEvents = () => {
 					setAlert('err-fillDetails', 'Введите число!');
 					e.target.value = '';
 				}
-				//max CBM validation for volume input:
-				else if (e.target.id === 'input-volume' && e.target.value > 23) {
-					setAlert('err-fillDetails', 'Макс. объем к расчету - 23 куб. м!');
-					e.target.value = '';
-				}
 				//max kgs validation for weight input:
 				else if (e.target.id === 'input-weight' && e.target.value > 11500) {
 					setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
 					e.target.value = '';
 				}
+				//float nums validation:
+				const temp = e.target.value.indexOf('.') !== -1 && e.target.value.slice(e.target.value.indexOf('.'));
+				if (temp && temp.length > 3) {
+					setAlert('err-fillDetails', 'Макс. число знаков после запятой - 2');
+					e.target.value = '';
+				}
+
 				if (e.target.id === 'input-currency') {
 					data_Selector.setCurrencyManually(e.target.value);
 				}
 
 				data_Selector.setWorkingWeight(
 					data_Selector.delMode,
+					unitForm.units,
 					Number(data_Selector.input_length.value),
 					Number(data_Selector.input_width.value),
 					Number(data_Selector.input_height.value),
-					Number(data_Selector.input_weight.value),
-					unitForm.units
+					Number(data_Selector.input_weight.value)
 				);
+
+				ui_Setter.switchButtonVisibility();
 
 				data_Selector.setTax();
 			}
@@ -62,8 +67,8 @@ export const execEvents = () => {
 			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
 			ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
 			ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
+
 			Array.from(document.querySelectorAll('.input-param')).forEach((elem) => (elem.value = ''));
-			globeContext.resetDataToDefault();
 		}
 	};
 
@@ -183,7 +188,9 @@ export const execEvents = () => {
 				.filter((child) => child.firstElementChild.tagName === 'INPUT')
 				.map((li) => li.firstElementChild.value);
 
-			unitForm.updateUnits(...values);
+			values.every((value) => value.match(/^(?!\s*$).+/))
+				? unitForm.updateUnits(...values)
+				: setAlert('err-fillDetails', 'Заполните все поля!');
 		}
 	});
 
@@ -214,7 +221,7 @@ export const execEvents = () => {
 		];
 		inputs.every((input) => input > 0) && unitForm.addUnits(...inputs);
 
-		if (unitForm.units.length > 0) {
+		if (unitForm.units.length > 0 && inputs.every((input) => input > 0)) {
 			data_Selector.setVolume(
 				data_Selector.delMode,
 				Number(data_Selector.input_length.value),
