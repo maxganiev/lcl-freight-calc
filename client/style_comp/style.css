@@ -343,10 +343,16 @@ li {
   .body-auth .disclaimer,
   .body-fileuploader .disclaimer {
     justify-content: space-evenly !important; }
+    .body-auth .disclaimer h3,
+    .body-fileuploader .disclaimer h3 {
+      font-size: calc(1rem + 0.6vw); }
     .body-auth .disclaimer .list,
     .body-fileuploader .disclaimer .list {
       text-align: left;
-      line-height: calc(1.1em + 1vmin); }
+      line-height: calc(1.3em + 1vmin);
+      display: flex;
+      flex-flow: column;
+      justify-content: space-evenly; }
       .body-auth .disclaimer .list li a:visited,
       .body-auth .disclaimer .list li a:not(:visited),
       .body-fileuploader .disclaimer .list li a:visited,
@@ -400,14 +406,14 @@ li {
     .body-auth main .fileuploader-form,
     .body-fileuploader main .auth-form,
     .body-fileuploader main .fileuploader-form {
-      width: 50%;
+      width: 40%;
       height: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      line-height: 1.6rem;
-      transform: translateX(50%) translateY(50%);
+      line-height: 1.9rem;
+      transform: translateX(70%) translateY(50%);
       position: relative;
       font-size: 0.8rem; }
       .body-auth main .auth-form .btn,
@@ -416,7 +422,7 @@ li {
       .body-fileuploader main .fileuploader-form .btn {
         color: #fff !important;
         position: absolute !important;
-        bottom: 2% !important; }
+        bottom: 0 !important; }
       .body-auth main .auth-form input[type='text'],
       .body-auth main .auth-form input[type='email'],
       .body-auth main .auth-form input[type='password'],

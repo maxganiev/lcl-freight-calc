@@ -5,11 +5,9 @@ import { emailSender } from './emailSender';
 import { setAlert } from './alert';
 import { checkSession } from './session';
 import { unitForm } from './unitForm';
-import { globeContext } from './globeContext';
 
 document.addEventListener('DOMContentLoaded', () => {
 	checkSession();
-	globeContext.windowResize(unitForm.calculateHeight.bind(unitForm));
 });
 
 export const execEvents = () => {
@@ -29,7 +27,11 @@ export const execEvents = () => {
 				else if (e.target.id === 'input-weight' && e.target.value > 11500) {
 					setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
 					e.target.value = '';
+				} else if (data_Selector.volume > 23) {
+					setAlert('err-fillDetails', 'Макс. объем к расчету -  23 м. куб.!');
+					e.target.value = '';
 				}
+
 				//float nums validation:
 				const temp = e.target.value.indexOf('.') !== -1 && e.target.value.slice(e.target.value.indexOf('.'));
 				if (temp && temp.length > 3) {
@@ -50,8 +52,6 @@ export const execEvents = () => {
 					Number(data_Selector.input_weight.value)
 				);
 
-				ui_Setter.switchButtonVisibility();
-
 				data_Selector.setTax();
 			}
 		}
@@ -59,9 +59,10 @@ export const execEvents = () => {
 
 	////calculate and get results:
 	document.getElementById('btn-getResults').onclick = async () => {
-		const { delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax } = data_Selector;
+		const { delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax, weight, volume } = data_Selector;
 
-		if (data_Selector.weight === 0 || data_Selector.volume === 0) {
+		console.log(weight, volume);
+		if (weight === 0 || volume === 0) {
 			setAlert('err-fillDetails', 'Заполните все необходимые поля!');
 		} else {
 			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);

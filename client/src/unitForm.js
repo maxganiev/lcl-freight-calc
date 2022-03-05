@@ -1,6 +1,7 @@
 import { data_Selector } from './dataSelector';
 import { setAlert } from './alert';
-import { ui_Setter } from './uiSetter';
+import { globeContext } from './globeContext';
+
 export const unitForm = {
 	body_HTML: document.getElementById('body-index'),
 	list_unitForm: document.getElementById('unitForm') === null ? document.createElement('ul') : document.getElementById('unitForm'),
@@ -11,6 +12,12 @@ export const unitForm = {
 	entriesValid: {
 		entry_weight: true,
 		entry_vol: true,
+	},
+
+	bindRef: null,
+
+	setbindRef: function () {
+		this.bindRef = this.calculateHeight.bind(this, this.body_HTML.scrollHeight, this.list_unitForm.scrollHeight);
 	},
 
 	addUnits: function (length, width, height, weight) {
@@ -55,13 +62,9 @@ export const unitForm = {
 
 		data_Selector.setWorkingWeight(data_Selector.delMode, this.units);
 
-		console.log(data_Selector.workingWeight);
-
 		this.showUnitForm();
 
 		this.unitIcon.style.visibility = this.units.length > 0 ? 'visible' : 'hidden';
-
-		ui_Setter.switchButtonVisibility();
 	},
 
 	updateUnits: function (length, width, height, weight) {
@@ -173,6 +176,9 @@ export const unitForm = {
 
 		setTimeout(() => {
 			this.calculateHeight(this.body_HTML.scrollHeight, this.list_unitForm.scrollHeight);
+
+			this.setbindRef();
+			globeContext.windowResize(this.bindRef);
 		}, 500);
 
 		if (this.list_unitForm.style.transform !== 'translateY(0%)') {
@@ -186,9 +192,10 @@ export const unitForm = {
 	},
 
 	hideUnitForm: function () {
-		this.body_HTML.style.height = '100vh';
-		document.getElementById('unitForm').style.transform = `translateY(-${this.list_unitForm.scrollHeight}px)`;
+		document.getElementById('unitForm').style.transform = `translateY(-${this.list_unitForm.scrollHeight * 1.05}px)`;
 		document.getElementById('unitForm').style.transition = 'all 0.6s ease-out';
+
+		globeContext.windowRemoveEventListener('resize', this.bindRef);
 	},
 
 	validateEntries: function (entryObject, initiator) {
@@ -218,10 +225,22 @@ export const unitForm = {
 	},
 
 	calculateHeight: function (bodyHeight, listHeight) {
-		if (bodyHeight >= listHeight) {
-			this.body_HTML.style.height = '100vh';
-		} else {
-			this.body_HTML.style.height = bodyHeight + (listHeight - bodyHeight) + 'px';
+		console.log(1);
+		//checking if list in scope of visibility, otherwise no need to perform anything:
+		if (this.list_unitForm.style.transform.indexOf('-') === -1) {
+			//timeout is needed to let some air to JS engine as calculations and rendering takes tome:
+			setTimeout(() => {
+				if (listHeight <= bodyHeight) {
+					this.list_unitForm.style.height = '100%';
+				} else {
+					this.list_unitForm.style.height =
+						Array.from(this.list_unitForm.children)
+							.filter((child) => !child.id.includes('listItem-icn-hide-unit-form'))
+							.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
+							1.05 +
+						'px';
+				}
+			}, 400);
 		}
 	},
 };

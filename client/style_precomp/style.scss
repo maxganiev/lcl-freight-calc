@@ -496,12 +496,20 @@ li {
 	.disclaimer {
 		justify-content: space-evenly !important;
 
+		h3 {
+			font-size: calc(1rem + 0.6vw);
+		}
+
 		.list {
 			text-align: left;
-			line-height: calc(1.1em + 1vmin);
-			li {
-				// position: relative;
+			line-height: calc(1.3em + 1vmin);
+			// height: 90%;
+			display: flex;
+			flex-flow: column;
+			justify-content: space-evenly;
+			// flex-wrap: wrap;
 
+			li {
 				a:visited,
 				a:not(:visited) {
 					font-weight: 600;
@@ -512,12 +520,6 @@ li {
 						cursor: pointer;
 					}
 				}
-
-				// .link-expand {
-				// 	position: absolute;
-				// 	left: 40%;
-				// 	top: 30%;
-				// }
 
 				.list-collapsed {
 					transform: scale(0);
@@ -568,21 +570,21 @@ li {
 
 		.auth-form,
 		.fileuploader-form {
-			width: 50%;
+			width: 40%;
 			height: 50%;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			line-height: 1.6rem;
-			transform: translateX(50%) translateY(50%);
+			line-height: 1.9rem;
+			transform: translateX(70%) translateY(50%);
 			position: relative;
 			font-size: $fs-md;
 
 			.btn {
 				color: $fs-clr-white !important;
 				position: absolute !important;
-				bottom: 2% !important;
+				bottom: 0 !important;
 			}
 
 			input[type='text'],

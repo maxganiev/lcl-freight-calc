@@ -2,11 +2,14 @@ import { setAlert } from '../alert';
 import { spinner } from '../spinner';
 
 (async function () {
+	document.body.style.visibility = 'hidden';
+
 	if (localStorage.getItem('lcl_ls')) {
 		const token = JSON.parse(localStorage.getItem('lcl_ls')).token;
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
+			document.body.style.visibility = 'visible';
 			spinner.addSpinner();
 			const req = await fetch('../db/auth.php', {
 				method: 'POST',
@@ -22,6 +25,7 @@ import { spinner } from '../spinner';
 			console.log(error);
 		}
 	} else {
+		document.body.style.visibility = 'visible';
 		const authForm = document.getElementById('auth-form');
 		const authEmail = document.getElementById('auth-email');
 		const authPass = document.getElementById('auth-pass');
@@ -34,12 +38,18 @@ import { spinner } from '../spinner';
 
 			if (!e.target.value) {
 				togglerPassCheckbox.checked = false;
+
+				//label:
+				togglerPassCheckbox.previousElementSibling.innerText = 'Показать пароль';
 				e.target.type = 'password';
 			}
 		};
 
 		togglerPassCheckbox.onchange = (e) => {
 			authPass.type = e.target.checked ? 'text' : 'password';
+
+			//label:
+			e.target.previousElementSibling.innerText = authPass.type === 'text' ? 'Скрыть пароль' : 'Показать пароль';
 		};
 
 		authForm.addEventListener('submit', async (e) => {

@@ -60,13 +60,7 @@ export const ui_Setter = {
 			this.calculatorResults.lastElementChild.remove();
 		}
 
-		this.switchButtonVisibility();
-	},
-
-	////hide of show btn to get results:
-	switchButtonVisibility: function () {
-		this.btnToGetResults.style.visibility =
-			data_Selector.workingWeight === null || data_Selector.workingWeight <= 0 ? 'hidden' : 'visible';
+		this.btnToGetResults.style.visibility = selectionDataArr.length < this.maxNumberOfSelectors ? 'hidden' : 'visible';
 	},
 
 	////apend or remove emailBox against btnToGetResults click ev:

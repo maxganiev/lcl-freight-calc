@@ -1,12 +1,37 @@
 import { globeContext } from '../globeContext';
 
 export const execEvents = function () {
-	//remembering height of body:
-	const body_screen_param = {
-		height: null,
+	const disclaimer = {
+		elem: document.getElementById('disclaimer'),
 
-		setBodyHeight: function (value) {
-			this.height = value;
+		bindRef: null,
+
+		setbindRef: function () {
+			this.bindRef = this.setDisclaimerHeight.bind(this, this.elem.style.visibility);
+		},
+
+		setDisclaimerHeight: function (...args) {
+			const elemIsVisible = args[0];
+			console.log(elemIsVisible);
+			if (elemIsVisible === 'visible') {
+				this.elem.style.height =
+					args.length === 1
+						? Array.from(this.elem.children)
+								.filter((child) => child.tagName === 'H3' || child.tagName === 'UL')
+								.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
+								1.05 +
+						  'px'
+						: Array.from(this.elem.children)
+								.filter((child) => child.tagName === 'H3' || child.tagName === 'UL')
+								.reduce((acc, curr) => acc + curr.scrollHeight, 0) +
+						  Array.from(args)
+								.splice(1, 1)
+								.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
+								1.05 +
+						  'px';
+			} else {
+				this.elem.style.height = '100%';
+			}
 		},
 	};
 
@@ -16,7 +41,9 @@ export const execEvents = function () {
 		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
 		e.target.parentElement.style.visibility = 'visible';
 
-		document.body.style.height = body_screen_param.height === null ? '160vh' : body_screen_param.height;
+		disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility);
+		disclaimer.setbindRef();
+		globeContext.windowResize(disclaimer.bindRef);
 	});
 
 	////hide brief
@@ -24,11 +51,10 @@ export const execEvents = function () {
 		e.target.parentElement.style.transform = 'translateX(100%)';
 		e.target.parentElement.style.transition = 'transform 0.6s ease-in-out';
 
-		document.body.style.height = '100vh';
-		document.body.style.transition = 'all 0.2s ease-in';
-
 		setTimeout(() => {
 			e.target.parentElement.style.visibility = 'hidden';
+			globeContext.windowRemoveEventListener('resize', disclaimer.bindRef);
+			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility);
 		}, 700);
 	});
 
@@ -62,8 +88,12 @@ export const execEvents = function () {
 		const img_srcs = srcs.map((src) => url + src);
 		lazyLoadImg(e, element, img_srcs, id);
 
-		document.body.style.height = document.body.scrollHeight * 1.25 + 'px';
-		body_screen_param.setBodyHeight(document.body.style.height);
+		setTimeout(() => {
+			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
+
+			disclaimer.setbindRef();
+			globeContext.windowResize(disclaimer.bindRef);
+		}, 400);
 	}
 
 	//collapse brief:
@@ -77,8 +107,12 @@ export const execEvents = function () {
 		link.style.visibility = 'visible';
 		lazyLoadImg(e, element);
 
-		document.body.style.height = document.body.scrollHeight / 1.25 + 'px';
-		body_screen_param.setBodyHeight(document.body.style.height);
+		setTimeout(() => {
+			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
+
+			disclaimer.setbindRef();
+			globeContext.windowResize(disclaimer.bindRef);
+		}, 400);
 	}
 
 	//lazy load imgs on click:
@@ -159,10 +193,10 @@ export const execEvents = function () {
 				imgMask.style.background = 'unset';
 				imgMask.style.cursor = 'default';
 			};
-		};
 
-		setTimeout(() => {
-			img.scrollIntoView();
-		}, 250);
+			setTimeout(() => {
+				img.scrollIntoView();
+			}, 450);
+		};
 	}
 };

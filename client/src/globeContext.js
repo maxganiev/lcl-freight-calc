@@ -12,9 +12,20 @@ export const globeContext = {
 		unitForm.unitIcon.style.visibility = 'hidden';
 	},
 
+	resize_events: [],
+
 	windowResize: function (callback) {
-		window.onresize = () => {
-			return callback();
-		};
+		this.resize_events.push(callback);
+
+		this.resize_events.forEach((func) => {
+			window.addEventListener('resize', func);
+		});
+	},
+
+	windowRemoveEventListener: function (type, callback) {
+		const index = this.resize_events.findIndex((event) => event === callback);
+		window.removeEventListener(type, callback);
+
+		this.resize_events.splice(index, 1);
 	},
 };
