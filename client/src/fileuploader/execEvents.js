@@ -88,12 +88,12 @@ export const execEvents = function () {
 		const img_srcs = srcs.map((src) => url + src);
 		lazyLoadImg(e, element, img_srcs, id);
 
-		setTimeout(() => {
-			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
+		// setTimeout(() => {
+		// 	disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
 
-			disclaimer.setbindRef();
-			globeContext.windowResize(disclaimer.bindRef);
-		}, 400);
+		// 	disclaimer.setbindRef();
+		// 	globeContext.windowResize(disclaimer.bindRef);
+		// }, 400);
 	}
 
 	//collapse brief:
@@ -164,7 +164,11 @@ export const execEvents = function () {
 				imgWidth = img.width;
 			}
 
-			globeContext.windowResize(resizeImg);
+			resizeImg();
+			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, parentElem);
+
+			disclaimer.setbindRef();
+			globeContext.windowResize(disclaimer.bindRef);
 
 			img.onmousemove = (e) => {
 				portion = (e.offsetX / imgWidth) * 100;
