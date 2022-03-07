@@ -3,13 +3,13 @@ import { spinner } from '../spinner';
 import { execEvents } from './execEvents';
 
 (async function () {
-	document.body.style.visibility = 'hidden';
 	if (localStorage.getItem('lcl_ls')) {
 		const token = JSON.parse(localStorage.getItem('lcl_ls')).token;
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
 			document.body.style.visibility = 'visible';
+
 			spinner.addSpinner();
 			const req = await fetch('../db/auth.php', {
 				method: 'POST',

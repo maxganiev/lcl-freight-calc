@@ -479,6 +479,7 @@ li {
 
 .body-auth,
 .body-fileuploader {
+	visibility: hidden;
 	width: 100%;
 	height: 100vh;
 	position: relative;
@@ -495,6 +496,8 @@ li {
 
 	.disclaimer {
 		justify-content: space-evenly !important;
+		background-color: rgba(250, 250, 250, 1);
+		color: #000;
 
 		h3 {
 			font-size: calc(1rem + 0.6vw);
@@ -514,7 +517,7 @@ li {
 				a:not(:visited) {
 					font-weight: 600;
 					text-decoration: underline;
-					color: $fs-clr-white;
+					color: #000;
 
 					&:hover {
 						cursor: pointer;

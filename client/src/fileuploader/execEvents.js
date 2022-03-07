@@ -12,25 +12,16 @@ export const execEvents = function () {
 
 		setDisclaimerHeight: function (...args) {
 			const elemIsVisible = args[0];
-			console.log(elemIsVisible);
+			console.log(args);
 			if (elemIsVisible === 'visible') {
 				this.elem.style.height =
-					args.length === 1
-						? Array.from(this.elem.children)
-								.filter((child) => child.tagName === 'H3' || child.tagName === 'UL')
-								.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
-								1.05 +
-						  'px'
-						: Array.from(this.elem.children)
-								.filter((child) => child.tagName === 'H3' || child.tagName === 'UL')
-								.reduce((acc, curr) => acc + curr.scrollHeight, 0) +
-						  Array.from(args)
-								.splice(1, 1)
-								.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
-								1.05 +
-						  'px';
+					Array.from(this.elem.children)
+						.filter((child) => child.tagName === 'H3' || child.tagName === 'UL')
+						.reduce((acc, curr) => acc + curr.scrollHeight, 0) *
+						1.05 +
+					'px';
 			} else {
-				this.elem.style.height = '100%';
+				this.elem.style.height = '100vh';
 			}
 		},
 	};
@@ -58,98 +49,87 @@ export const execEvents = function () {
 		}, 700);
 	});
 
-	////show and hide additional info from brief if required:
+	class Img {
+		constructor(linkToExpand, linkToCollapse, listId, imgDir, imgArr, img, imgWidth, bindRef) {
+			this.linkToExpand = linkToExpand;
+			this.linkToCollapse = linkToCollapse;
+			this.listId = listId;
+			this.imgDir = imgDir;
+			this.imgArr = imgArr;
+			this.img = img;
+			this.imgWidth = imgWidth;
+			this.bindRef = bindRef;
+		}
+	}
 
-	//DOM constants:
-	const link_to_expand_collapsible_list_01 = document.getElementById('link-expand-collapsible-01');
-	const link_to_collapse_collapsible_list_01 = document.getElementById('link-collapse-collapsible-01');
-	const link_to_expand_collapsible_list_02 = document.getElementById('link-expand-collapsible-02');
-	const link_to_collapse_collapsible_list_02 = document.getElementById('link-collapse-collapsible-02');
-	const link_to_expand_collapsible_list_03 = document.getElementById('link-expand-collapsible-03');
-	const link_to_collapse_collapsible_list_03 = document.getElementById('link-collapse-collapsible-03');
-
-	//event handlers:
-	link_to_expand_collapsible_list_01.onclick = (e) => expand(e, '01', '0_rules_headers', ['0.png', '1.png']);
-	link_to_collapse_collapsible_list_01.onclick = (e) => collapse(e, '01');
-	link_to_expand_collapsible_list_02.onclick = (e) => expand(e, '02', '1_rules_fraction', ['0.png', '1.png']);
-	link_to_collapse_collapsible_list_02.onclick = (e) => collapse(e, '02');
-	link_to_expand_collapsible_list_03.onclick = (e) => expand(e, '03', '2_upload_table', ['0.png', '1.png', '2.png']);
-	link_to_collapse_collapsible_list_03.onclick = (e) => collapse(e, '03');
-
-	//expand brief:
-	function expand(e, id, dir, srcs) {
+	Img.prototype.expand = function (e) {
 		e.preventDefault();
 
-		const element = document.getElementById(`list-collapsible-${id}`);
+		const element = document.getElementById(`list-collapsible-${this.listId}`);
 		element.classList.replace('list-collapsed', 'list-expanded');
 		e.target.style.visibility = 'hidden';
 
-		const url = `./assets/brief/${dir}/`;
-		const img_srcs = srcs.map((src) => url + src);
-		lazyLoadImg(e, element, img_srcs, id);
+		const url = `./assets/brief/${this.imgDir}/`;
+		const img_srcs = this.imgArr.map((src) => url + src);
 
-		// setTimeout(() => {
-		// 	disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
+		this.lazyLoadImg(e, element, img_srcs, this.listId);
+		this.resizeImg();
+		this.setbindRef();
 
-		// 	disclaimer.setbindRef();
-		// 	globeContext.windowResize(disclaimer.bindRef);
-		// }, 400);
-	}
+		globeContext.windowResize(this.bindRef);
+	};
 
-	//collapse brief:
-	function collapse(e, id) {
+	Img.prototype.collapse = function (e) {
 		e.preventDefault();
 
-		const element = document.getElementById(`list-collapsible-${id}`);
+		const element = document.getElementById(`list-collapsible-${this.listId}`);
 		element.classList.replace('list-expanded', 'list-collapsed');
 
-		const link = document.getElementById(`link-expand-collapsible-${id}`);
+		const link = document.getElementById(`link-expand-collapsible-${this.listId}`);
 		link.style.visibility = 'visible';
-		lazyLoadImg(e, element);
 
-		setTimeout(() => {
-			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, element);
+		this.lazyLoadImg(e, element);
+		disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility);
+		globeContext.windowRemoveEventListener('resize', this.bindRef);
+	};
 
-			disclaimer.setbindRef();
-			globeContext.windowResize(disclaimer.bindRef);
-		}, 400);
-	}
-
-	//lazy load imgs on click:
-	function lazyLoadImg(e, parentElem, imgSrcArr, id) {
-		const img = Array.from(parentElem.children).filter(
+	Img.prototype.lazyLoadImg = function (e, parentElem, imgSrcArr, id) {
+		this.img = Array.from(parentElem.children).filter(
 			(child) => child.firstElementChild && child.firstElementChild.className === 'img-mask'
 		)[0].firstElementChild.firstElementChild;
 
-		const imgMask = img.parentElement;
+		const imgMask = this.img.parentElement;
 
 		if (e.target.id.includes('expand')) {
-			img.removeAttribute('data-src');
-			img.setAttribute('src', imgSrcArr[0]);
+			this.img.removeAttribute('data-src');
+			this.img.setAttribute('src', imgSrcArr[0]);
 			document.getElementById(`imgId-${id}`).textContent = `1 из ${imgSrcArr.length}`;
 		} else {
-			img.removeAttribute('src');
-			img.setAttribute('data-src', '/');
+			this.img.removeAttribute('src');
+			this.img.setAttribute('data-src', '/');
 		}
 
 		let portion;
 
 		let i = 0;
+		const _this = this;
+
 		function slideLeft() {
 			i > 0 ? i-- : (i = 0);
-			img.setAttribute('src', imgSrcArr[i]);
+			_this.img.setAttribute('src', imgSrcArr[i]);
 
 			document.getElementById(`imgId-${id}`).textContent = `${i + 1} из ${imgSrcArr.length}`;
 		}
 
 		function slideRight() {
 			i < imgSrcArr.length - 1 ? i++ : (i = imgSrcArr.length - 1);
-			img.setAttribute('src', imgSrcArr[i]);
+
+			_this.img.setAttribute('src', imgSrcArr[i]);
 
 			document.getElementById(`imgId-${id}`).textContent = `${i + 1} из ${imgSrcArr.length}`;
 		}
 
-		imgMask.onclick = (e) => {
+		imgMask.onclick = () => {
 			if (portion >= 70) {
 				slideRight();
 			} else if (portion <= 30) {
@@ -157,50 +137,90 @@ export const execEvents = function () {
 			}
 		};
 
-		img.onload = () => {
-			let imgWidth = img.width;
-
-			function resizeImg() {
-				imgWidth = img.width;
-			}
-
-			resizeImg();
+		this.img.onload = () => {
+			this.resizeImg();
 			disclaimer.setDisclaimerHeight(disclaimer.elem.style.visibility, parentElem);
 
-			disclaimer.setbindRef();
-			globeContext.windowResize(disclaimer.bindRef);
-
-			img.onmousemove = (e) => {
-				portion = (e.offsetX / imgWidth) * 100;
+			this.img.onmousemove = (e) => {
+				portion = (e.offsetX / this.imgWidth) * 100;
 
 				if (portion >= 70) {
 					imgMask.style.background = `linear-gradient(270deg, rgba(1,6,13,1) ${100 - portion}%, rgba(239,236,238,1) ${
 						100 - portion
 					}%)`;
 
-					img.style.opacity = 0.6;
+					this.img.style.opacity = 0.6;
 					imgMask.style.cursor = 'pointer';
 				} else if (portion <= 30) {
 					imgMask.style.background = `linear-gradient(90deg, rgba(1,6,13,1) ${portion}%, rgba(239,236,238,1) ${portion}%)`;
-					img.style.opacity = 0.6;
+					this.img.style.opacity = 0.6;
 					imgMask.style.cursor = 'pointer';
 				} else {
 					imgMask.style.background = 'unset';
 					imgMask.style.transform = 'unset';
-					img.style.opacity = 1;
+					this.img.style.opacity = 1;
 					imgMask.style.cursor = 'default';
 				}
 			};
 
-			img.onmouseleave = () => {
-				img.style.opacity = 1;
+			this.img.onmouseleave = () => {
+				this.img.style.opacity = 1;
 				imgMask.style.background = 'unset';
 				imgMask.style.cursor = 'default';
 			};
 
 			setTimeout(() => {
-				img.scrollIntoView();
+				this.img.scrollIntoView();
 			}, 450);
 		};
-	}
+	};
+
+	Img.prototype.resizeImg = function () {
+		this.imgWidth = this.img.width;
+		console.log('+');
+	};
+
+	Img.prototype.setbindRef = function () {
+		this.bindRef = this.resizeImg.bind(this);
+	};
+
+	const img1 = new Img(
+		document.getElementById('link-expand-collapsible-01'),
+		document.getElementById('link-collapse-collapsible-01'),
+		'01',
+		'0_rules_headers',
+		['0.png', '1.png'],
+		null,
+		null,
+		null
+	);
+
+	const img2 = new Img(
+		document.getElementById('link-expand-collapsible-02'),
+		document.getElementById('link-collapse-collapsible-02'),
+		'02',
+		'1_rules_fraction',
+		['0.png', '1.png'],
+		null,
+		null,
+		null
+	);
+
+	const img3 = new Img(
+		document.getElementById('link-expand-collapsible-03'),
+		document.getElementById('link-collapse-collapsible-03'),
+		'03',
+		'2_upload_table',
+		['0.png', '1.png', '2.png'],
+		null,
+		null,
+		null
+	);
+
+	img1.linkToExpand.onclick = (e) => img1.expand(e);
+	img1.linkToCollapse.onclick = (e) => img1.collapse(e);
+	img2.linkToExpand.onclick = (e) => img2.expand(e);
+	img2.linkToCollapse.onclick = (e) => img2.collapse(e);
+	img3.linkToExpand.onclick = (e) => img3.expand(e);
+	img3.linkToCollapse.onclick = (e) => img3.collapse(e);
 };

@@ -149,13 +149,13 @@ export const freightCalc = {
 	},
 
 	getTotalCost: async function (delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax) {
-		await this.getExportCharges(delMode, depCountry, deliveryTerm, workingWeight, portOfLading);
-		await this.getImportCharges(delMode, workingWeight, portOfLading);
-
 		//waiting for the currency data to be fetched:
 		while (data_Selector.currency === null) {
 			await data_Selector.setCurrency();
 		}
+
+		await this.getExportCharges(delMode, depCountry, deliveryTerm, workingWeight, portOfLading);
+		await this.getImportCharges(delMode, workingWeight, portOfLading);
 
 		if (data_Selector.currency !== undefined) {
 			const VAT = 1.2;

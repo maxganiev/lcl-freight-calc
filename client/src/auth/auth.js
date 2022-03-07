@@ -2,15 +2,11 @@ import { setAlert } from '../alert';
 import { spinner } from '../spinner';
 
 (async function () {
-	document.body.style.visibility = 'hidden';
-
 	if (localStorage.getItem('lcl_ls')) {
 		const token = JSON.parse(localStorage.getItem('lcl_ls')).token;
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
-			document.body.style.visibility = 'visible';
-			spinner.addSpinner();
 			const req = await fetch('../db/auth.php', {
 				method: 'POST',
 				body: formData,
@@ -18,14 +14,21 @@ import { spinner } from '../spinner';
 			});
 
 			if (req.status === 200) {
-				spinner.removeSpinner();
 				window.location.replace('fileuploader.html');
+			} else {
+				document.body.style.visibility = 'visible';
+
+				setAlert('err-fillDetails', 'Сервер авторизации недоступен, свяжитесь с разработчиком', 10000);
 			}
 		} catch (error) {
 			console.log(error);
+
+			document.body.style.visibility = 'visible';
+			setAlert('err-fillDetails', 'Сервер авторизации недоступен, свяжитесь с разработчиком', 10000);
 		}
 	} else {
 		document.body.style.visibility = 'visible';
+
 		const authForm = document.getElementById('auth-form');
 		const authEmail = document.getElementById('auth-email');
 		const authPass = document.getElementById('auth-pass');

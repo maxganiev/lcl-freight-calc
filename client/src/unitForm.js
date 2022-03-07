@@ -225,7 +225,6 @@ export const unitForm = {
 	},
 
 	calculateHeight: function (bodyHeight, listHeight) {
-		console.log(1);
 		//checking if list in scope of visibility, otherwise no need to perform anything:
 		if (this.list_unitForm.style.transform.indexOf('-') === -1) {
 			//timeout is needed to let some air to JS engine as calculations and rendering takes tome:
