@@ -5,6 +5,14 @@ import { execEvents } from './execEvents';
 (async function () {
 	if (localStorage.getItem('lcl_ls')) {
 		const token = JSON.parse(localStorage.getItem('lcl_ls')).token;
+
+		//half a day in ms:
+		const elapsed = 43200000;
+		if (Date.now() - JSON.parse(localStorage.getItem('lcl_ls')).loggedin > elapsed) {
+			localStorage.removeItem('lcl_ls');
+			window.location.replace('auth.html');
+		}
+
 		const formData = new FormData();
 		formData.append('auth_token', token);
 		try {
@@ -138,13 +146,6 @@ import { execEvents } from './execEvents';
 				localStorage.removeItem('lcl_ls');
 			}
 		} catch (error) {}
-
-		//half a day in ms:
-		const elapsed = 43200000;
-		if (Date.now() - JSON.parse(localStorage.getItem('lcl_ls')).loggedin > elapsed) {
-			localStorage.removeItem('lcl_ls');
-			window.location.replace('auth.html');
-		}
 	} else {
 		window.location.replace('auth.html');
 	}
