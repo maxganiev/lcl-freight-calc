@@ -189,7 +189,8 @@ export const freightCalc = {
 				}
 			}
 
-			globeContext.resetDataToDefault();
+			this.totalTransportationCost !== 0 && globeContext.resetDataToDefault();
+			
 			return this.totalTransportationCost;
 		}
 	},
