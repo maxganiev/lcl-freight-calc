@@ -5,12 +5,27 @@ import { emailSender } from './emailSender';
 import { setAlert } from './alert';
 import { checkSession } from './session';
 import { unitForm } from './unitForm';
+import { globeContext } from './globeContext';
 
 document.addEventListener('DOMContentLoaded', () => {
 	checkSession();
 });
 
 export const execEvents = () => {
+	////selecting mode of calculation:
+	ui_Setter.link_switchCalcModeToCBM.onclick = ui_Setter.link_switchCalcModeToUnits.onclick = (e) => {
+		e.preventDefault();
+		ui_Setter.div_inputCBMCalcGroup.style.transform =
+			e.target.id === 'link-switch-calc-mode-to-cbm' ? 'rotate3d(0, 1, 0, 180deg)' : 'rotate3d(0, 0, 0, 180deg)';
+
+		Array.from(document.getElementsByClassName('input-param')).forEach((elem) => {
+			if (elem.id !== 'input-weight') {
+				elem.value = '';
+			}
+		});
+		globeContext.resetDataToDefault();
+	};
+
 	////setting working weight and tax to calculate:
 	document.body.addEventListener('keyup', (e) => {
 		if (e.target.className.includes('input-param')) {
@@ -28,6 +43,15 @@ export const execEvents = () => {
 					setAlert('err-fillDetails', 'Макс. вес к расчету -  11 500 кг!');
 					e.target.value = '';
 				} else if (data_Selector.volume > 23) {
+					setAlert('err-fillDetails', 'Макс. объем к расчету -  23 м. куб.!');
+					e.target.value = '';
+				} else if (
+					Number(data_Selector.input_length.value) *
+						Number(data_Selector.input_width.value) *
+						Number(data_Selector.input_height.value) >
+						23 ||
+					Number(data_Selector.input_volume.value) > 23
+				) {
 					setAlert('err-fillDetails', 'Макс. объем к расчету -  23 м. куб.!');
 					e.target.value = '';
 				}
@@ -49,7 +73,8 @@ export const execEvents = () => {
 					Number(data_Selector.input_length.value),
 					Number(data_Selector.input_width.value),
 					Number(data_Selector.input_height.value),
-					Number(data_Selector.input_weight.value)
+					Number(data_Selector.input_weight.value),
+					Number(data_Selector.input_volume.value)
 				);
 
 				data_Selector.setTax();

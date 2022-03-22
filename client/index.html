@@ -76,14 +76,48 @@
 					<option value="Авиа">Авиа</option>
 				</select>
 				<input type="text" id="input-weight" class="input-param form-control" placeholder="Введите вес места в кг" />
-				<div class="input-cbm-calc-group">
-					<input type="text" id="input-length" class="input-param form-control" placeholder="Д(м)" />
-					<input type="text" id="input-width" class="input-param form-control" placeholder="Ш(м)" />
-					<input type="text" id="input-height" class="input-param form-control" placeholder="В(м)" />
+				<div class="input-cbm-calc-group" id="input-cbm-calc-group">
+					<div class="face-front">
+						<input type="text" id="input-length" class="input-param form-control" placeholder="Д(м)" />
+						<input type="text" id="input-width" class="input-param form-control" placeholder="Ш(м)" />
+						<input type="text" id="input-height" class="input-param form-control" placeholder="В(м)" />
 
-					<h6>Добавить место</h6>
-					<img src="./assets/square-plus-solid.svg" alt="add another unit" id="icn-add-unit" class="icn-add-unit" />
-					<p id="output" class="output"></p>
+						<h6>Добавить место</h6>
+						<img
+							src="./assets/square-plus-solid.svg"
+							alt="add another unit"
+							id="icn-add-unit"
+							class="icn-add-unit"
+						/>
+						<p id="output" class="output"></p>
+
+						<a
+							id="link-switch-calc-mode-to-cbm"
+							class="link-switch-calc-mode"
+							href="#"
+							title="Рассчитать по объему"
+						>
+							CBM
+						</a>
+					</div>
+
+					<div class="face-rear">
+						<h6>Введите объем в м. куб.</h6>
+						<input type="text" id="input-volume" class="input-param form-control" placeholder="м. куб." />
+						<a
+							id="link-switch-calc-mode-to-units"
+							class="link-switch-calc-mode"
+							href="#"
+							title="Рассчитать по местам"
+						>
+							UNITS
+						</a>
+					</div>
+
+					<div class="face-right"></div>
+					<div class="face-left"></div>
+					<div class="face-top"></div>
+					<div class="face-bottom"></div>
 				</div>
 
 				<input type="text" id="input-tax" class="input-param form-control" placeholder="Укажите размер пошлины" />

@@ -32,6 +32,7 @@ export const data_Selector = {
 	input_length: document.getElementById('input-length'),
 	input_width: document.getElementById('input-width'),
 	input_height: document.getElementById('input-height'),
+	input_volume: document.getElementById('input-volume'),
 	volume: 0,
 	output: document.getElementById('output'),
 
@@ -131,9 +132,9 @@ export const data_Selector = {
 		}
 	},
 
-	setVolume: function (length, width, height, units) {
+	setVolume: function (vol, units) {
 		if (units.length === 0) {
-			this.volume = length * width * height;
+			this.volume = vol;
 		} else {
 			this.volume = unitForm.units.reduce((acc, curr) => acc + curr['Объем (м. куб.)'], 0);
 		}
@@ -161,8 +162,15 @@ export const data_Selector = {
 		}
 	},
 
-	setWorkingWeight: function (delMode, units, length = 0, width = 0, height = 0, weight = 0) {
-		this.setVolume(length, width, height, units);
+	setWorkingWeight: function (delMode, units, length = 0, width = 0, height = 0, weight = 0, vol) {
+		if (length !== 0 && width !== 0 && height !== 0) {
+			const v = length * width * height;
+			this.setVolume(v, units);
+		} else {
+			const v = vol;
+			this.setVolume(v, units);
+		}
+
 		this.setWeight(weight, units);
 		this.printData();
 

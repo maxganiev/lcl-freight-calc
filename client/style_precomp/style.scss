@@ -345,6 +345,66 @@ li {
 					flex-wrap: wrap;
 					justify-content: center;
 					align-items: center;
+					transform: rotate3d(0, 0, 0, 180deg);
+					transform-style: preserve-3d;
+					transition: all 0.4s ease-in;
+
+					%face-options-shared {
+						position: absolute;
+						backface-visibility: inherit;
+						width: 100%;
+						height: 100%;
+						display: block;
+						background-color: rgba(250, 250, 250, 0.9);
+
+						input {
+							display: inline-block;
+						}
+
+						.link-switch-calc-mode {
+							position: absolute;
+							bottom: 5px;
+							right: 15px;
+							color: #000;
+							font-weight: 700;
+						}
+					}
+
+					.face {
+						&-front {
+							@extend %face-options-shared;
+							transform: translateZ(50px);
+							padding-top: 10px;
+
+							h6 {
+								margin-top: 10px;
+							}
+						}
+						&-rear {
+							@extend %face-options-shared;
+							transform: rotateY(180deg) translateZ(50px);
+
+							h6 {
+								margin-top: 30px;
+							}
+						}
+						&-right {
+							@extend %face-options-shared;
+							transform: rotateY(90deg) translateZ(50px);
+						}
+						&-left {
+							@extend %face-options-shared;
+							transform: rotateY(-90deg) translateZ(50px);
+						}
+						&-top {
+							@extend %face-options-shared;
+							transform: rotateX(90deg) translateZ(50px);
+						}
+						&-bottom {
+							@extend %face-options-shared;
+							transform: rotateY(-90deg) translateZ(50px);
+						}
+					}
 
 					input[type='text']::-webkit-input-placeholder {
 						/* Chrome/Opera/Safari */

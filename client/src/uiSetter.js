@@ -8,6 +8,9 @@ export const ui_Setter = {
 	calculatorResults: document.getElementById('calculator-results'),
 	calculatorNavPanel: document.getElementById('calculator-navPanel'),
 	btnToGetResults: document.getElementById('btn-getResults'),
+	div_inputCBMCalcGroup: document.getElementById('input-cbm-calc-group'),
+	link_switchCalcModeToCBM: document.getElementById('link-switch-calc-mode-to-cbm'),
+	link_switchCalcModeToUnits: document.getElementById('link-switch-calc-mode-to-units'),
 
 	////calcs result:
 	calcRes: null,

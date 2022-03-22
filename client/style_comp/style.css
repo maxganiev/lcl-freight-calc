@@ -240,7 +240,42 @@ li {
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center; }
+        align-items: center;
+        transform: rotate3d(0, 0, 0, 180deg);
+        transform-style: preserve-3d;
+        transition: all 0.4s ease-in; }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-front, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-rear, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-right, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-left, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-top, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-bottom {
+          position: absolute;
+          backface-visibility: inherit;
+          width: 100%;
+          height: 100%;
+          display: block;
+          background-color: rgba(250, 250, 250, 0.9); }
+          .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-front input, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-rear input, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-right input, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-left input, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-top input, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-bottom input {
+            display: inline-block; }
+          .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-front .link-switch-calc-mode, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-rear .link-switch-calc-mode, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-right .link-switch-calc-mode, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-left .link-switch-calc-mode, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-top .link-switch-calc-mode, .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-bottom .link-switch-calc-mode {
+            position: absolute;
+            bottom: 5px;
+            right: 15px;
+            color: #000;
+            font-weight: 700; }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-front {
+          transform: translateZ(50px);
+          padding-top: 10px; }
+          .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-front h6 {
+            margin-top: 10px; }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-rear {
+          transform: rotateY(180deg) translateZ(50px); }
+          .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-rear h6 {
+            margin-top: 30px; }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-right {
+          transform: rotateY(90deg) translateZ(50px); }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-left {
+          transform: rotateY(-90deg) translateZ(50px); }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-top {
+          transform: rotateX(90deg) translateZ(50px); }
+        .body-index .main-index .calculator-navPanel .input-cbm-calc-group .face-bottom {
+          transform: rotateY(-90deg) translateZ(50px); }
         .body-index .main-index .calculator-navPanel .input-cbm-calc-group input[type='text']::-webkit-input-placeholder {
           /* Chrome/Opera/Safari */
           font-size: 0.6rem !important; }
