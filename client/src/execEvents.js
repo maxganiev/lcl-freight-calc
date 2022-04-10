@@ -86,15 +86,12 @@ export const execEvents = () => {
 	document.getElementById('btn-getResults').onclick = async () => {
 		const { delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax, weight, volume } = data_Selector;
 
-		console.log(weight, volume);
 		if (weight === 0 || volume === 0) {
 			setAlert('err-fillDetails', 'Заполните все необходимые поля!');
 		} else {
 			await freightCalc.getTotalCost(delMode, depCountry, deliveryTerm, workingWeight, portOfLading, tax);
 			ui_Setter.printRes(freightCalc.totalTransportationCost, data_Selector.selectionData);
 			ui_Setter.setMailForm(freightCalc.totalTransportationCost, data_Selector.selectionData);
-
-			Array.from(document.querySelectorAll('.input-param')).forEach((elem) => (elem.value = ''));
 		}
 	};
 
